@@ -1,0 +1,14 @@
+{
+  "id": "plants_fail",
+  "kind": "auto",
+  "chance": 1.0,
+  "success": {
+    "text": "After months of unreliable power, all three plants failed. About 4,000 jobs were lost. Pollution downwind ended.",
+    "ops": [
+      {"op": "set", "key": "parties.plants.status", "value": "closed"},
+      {"op": "set", "key": "resources.plants_operating", "value": 0},
+      {"op": "set", "key": "resources.plant_jobs", "value": 0},
+      {"op": "set", "key": "resources.illness_cases", "value": 300}
+    ]
+  }
+}

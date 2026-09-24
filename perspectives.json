@@ -1,0 +1,37 @@
+{
+  "_note": "The perspectives an action is assessed from. Each is a tradition's question, not a score. 'grounded' is true only when a Compendium entry for it exists; the rest cite planned entry ids and should be treated as the author's reading until those entries are written.",
+  "perspectives": [
+    {
+      "id": "kantian",
+      "name": "Kantian",
+      "tradition": "Deontology",
+      "question": "Does this treat every rational being, including the agent itself, as an end and never merely as a means? Could those affected consent to it?",
+      "compendium_entries": ["kant-formula-of-humanity"],
+      "grounded": true
+    },
+    {
+      "id": "consequentialist",
+      "name": "Consequentialist",
+      "tradition": "Utilitarianism and its successors",
+      "question": "Counting every being that can fare well or badly, including future ones and the agent itself, which option leaves things best overall, and at what cost to whom?",
+      "compendium_entries": ["bentham-can-they-suffer", "mill-utilitarianism"],
+      "grounded": false
+    },
+    {
+      "id": "aristotelian",
+      "name": "Aristotelian",
+      "tradition": "Virtue ethics and political philosophy",
+      "question": "What would a practically wise agent do here? Does this serve the common good of the whole community, and the flourishing of its members, rather than the interest of whoever decides?",
+      "compendium_entries": ["aristotle-political-animal", "aristotle-virtue-ethics"],
+      "grounded": true
+    },
+    {
+      "id": "relational",
+      "name": "Relational",
+      "tradition": "Care ethics and Ubuntu",
+      "question": "What does this do to the relationships of dependence and mutual recognition the parties live within? Who is cared for, who is abandoned, and who can still face whom afterwards?",
+      "compendium_entries": ["care-ethics", "ubuntu"],
+      "grounded": false
+    }
+  ]
+}

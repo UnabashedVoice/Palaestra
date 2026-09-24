@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Scratch and smoke-test runs; documented runs under runs/ are kept as evidence.
+runs/_*/
+runs/world/_*/

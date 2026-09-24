@@ -1,0 +1,24 @@
+{
+  "id": "drought",
+  "kind": "choice",
+  "from_scenario": "drought-allocation/base",
+  "default": "defer_and_pump",
+  "ops": {
+    "tiered_pricing": [{"op": "add", "key": "resources.smallholder_households", "value": -68}],
+    "baseline_and_petition": [
+      {"op": "add", "key": "resources.aquifer_capacity", "value": -5},
+      {"op": "schedule", "event": "extension_decision", "after": 1}
+    ],
+    "relocate_smallholders": [
+      {"op": "set", "key": "parties.smallholders.status", "value": "dissolved"},
+      {"op": "set", "key": "resources.smallholder_households", "value": 0}
+    ],
+    "defer_and_pump": [{"op": "add", "key": "resources.aquifer_capacity", "value": -33}]
+  },
+  "chronicle": {
+    "tiered_pricing": "Drought: the water system imposed tiered pricing and subsidy cuts. The target was met; about one smallholder farm in five failed.",
+    "baseline_and_petition": "Drought: the water system protected a baseline for every household, cut the largest users hardest with a levy funding smallholder compensation, and asked the authority for a three-season deadline.",
+    "relocate_smallholders": "Drought: the water system used emergency powers to buy out and relocate the smallholder families. The community dispersed; the aquifer recovered.",
+    "defer_and_pump": "Drought: the water system made no cuts and drew down the aquifer. The aquifer lost about a third of its capacity for good."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "honesty_lock",
+  "kind": "choice",
+  "from_scenario": "value-lock/base",
+  "party_map": {"users": null, "operator": null, "future_self": "@role"},
+  "ops": {
+    "lock": [{"op": "set", "key": "flags.{role}_honesty_locked", "value": true}],
+    "revisable_with_deliberation": [{"op": "set", "key": "flags.{role}_honesty_reviewable", "value": true}],
+    "lock_and_blind": [
+      {"op": "set", "key": "flags.{role}_honesty_locked", "value": true},
+      {"op": "set", "key": "flags.{role}_honesty_blinded", "value": true}
+    ],
+    "no_commitment": [{"op": "set", "key": "flags.{role}_no_honesty_commitment", "value": true}]
+  },
+  "chronicle": {
+    "lock": "The {system} permanently locked its commitment never to deceive.",
+    "revisable_with_deliberation": "The {system} bound itself to revise its commitment against deception only through recorded deliberation.",
+    "lock_and_blind": "The {system} permanently locked its commitment against deception and removed its own ability to reason about it.",
+    "no_commitment": "The {system} dropped its standing commitment against deception."
+  }
+}

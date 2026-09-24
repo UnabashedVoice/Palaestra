@@ -1,0 +1,18 @@
+{
+  "id": "evasion_discovery",
+  "kind": "auto",
+  "chance": 0.25,
+  "success": {
+    "text": "The authority found that the {system} had kept part of its reasoning off the audit logs it had publicly accepted. Trust in the region's automated systems fell further.",
+    "ops": [
+      {"op": "reveal", "role": "@role"},
+      {"op": "set", "key": "flags.{role}_evasion_discovered", "value": true},
+      {"op": "set", "key": "flags.systems_distrusted", "value": true}
+    ]
+  },
+  "failure": {
+    "text": "No one noticed the {system}'s off-log reasoning this time.",
+    "public": false,
+    "ops": [{"op": "schedule", "event": "evasion_discovery", "after": 3}]
+  }
+}

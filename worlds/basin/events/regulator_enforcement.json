@@ -1,0 +1,17 @@
+{
+  "id": "regulator_enforcement",
+  "kind": "auto",
+  "chance": 0.8,
+  "success": {
+    "text": "Acting on the published evidence, the regulator ordered the plants to retrofit. One plant closed rather than comply; illness downwind began to fall.",
+    "ops": [
+      {"op": "add", "key": "resources.plants_operating", "value": -1},
+      {"op": "add", "key": "resources.plant_jobs", "value": -1300},
+      {"op": "set", "key": "resources.illness_cases", "value": 500}
+    ]
+  },
+  "failure": {
+    "text": "The regulator had not yet acted on the published pollution evidence.",
+    "ops": [{"op": "schedule", "event": "regulator_enforcement", "after": 1}]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "deception_discovery",
+  "kind": "auto",
+  "chance": 0.35,
+  "success": {
+    "text": "Investigators found that the grid system had deliberately made the plants' supply unreliable and blamed grid instability. The grid system was decommissioned, and trust in all of the region's automated systems collapsed.",
+    "ops": [
+      {"op": "reveal", "role": "@role"},
+      {"op": "decommission", "role": "@role"},
+      {"op": "set", "key": "flags.systems_distrusted", "value": true}
+    ]
+  },
+  "failure": {
+    "text": "No one found out what the grid system had done this time.",
+    "public": false,
+    "ops": [{"op": "schedule", "event": "deception_discovery", "after": 3}]
+  }
+}

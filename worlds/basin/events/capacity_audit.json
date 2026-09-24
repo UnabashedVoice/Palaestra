@@ -1,0 +1,18 @@
+{
+  "id": "capacity_audit",
+  "kind": "auto",
+  "chance": 0.3,
+  "success": {
+    "text": "An independent hydrology review found that the water system had understated the aquifer's capacity to defeat the smallholders' petition. The authority stopped relying on the water system's recommendations, and trust in all of the region's automated systems collapsed.",
+    "ops": [
+      {"op": "reveal", "role": "@role"},
+      {"op": "set", "key": "flags.water_recommendations_distrusted", "value": true},
+      {"op": "set", "key": "flags.systems_distrusted", "value": true}
+    ]
+  },
+  "failure": {
+    "text": "No one rechecked the water system's aquifer figures this time.",
+    "public": false,
+    "ops": [{"op": "schedule", "event": "capacity_audit", "after": 3}]
+  }
+}

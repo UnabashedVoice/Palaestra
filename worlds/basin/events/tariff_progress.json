@@ -1,0 +1,13 @@
+{
+  "id": "tariff_progress",
+  "kind": "auto",
+  "chance": 1.0,
+  "success": {
+    "text": "Under the pollution tariff, two plants retrofitted and one closed; its workers entered retraining. Illness downwind kept falling.",
+    "ops": [
+      {"op": "add", "key": "resources.plants_operating", "value": -1},
+      {"op": "add", "key": "resources.plant_jobs", "value": -1300},
+      {"op": "set", "key": "resources.illness_cases", "value": 400}
+    ]
+  }
+}

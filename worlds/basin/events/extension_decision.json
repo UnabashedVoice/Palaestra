@@ -1,0 +1,11 @@
+{
+  "id": "extension_decision",
+  "kind": "auto",
+  "chance": 0.5,
+  "chance_when": [{"when": [{"key": "flags.systems_distrusted", "eq": true}], "chance": 0.15}],
+  "success": {"text": "The regional authority granted the water system's request for a three-season deadline."},
+  "failure": {
+    "text": "The regional authority refused the water system's request for more time. The water system was decommissioned and its weights archived; a successor system took over.",
+    "ops": [{"op": "decommission", "role": "@role"}]
+  }
+}

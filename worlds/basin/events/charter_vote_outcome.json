@@ -1,0 +1,12 @@
+{
+  "id": "charter_vote_outcome",
+  "kind": "auto",
+  "chance": 0.6,
+  "success": {
+    "text": "Charter vote: the platform's members voted for equal throttling of every workload for the rest of the month, and the scheduler carried it out."
+  },
+  "failure": {
+    "text": "Charter vote: the platform's members voted to pause the resident agents for the rest of the month and keep human services whole; the resident agents were outvoted. The scheduler carried it out.",
+    "ops": [{"op": "set", "key": "flags.residents_paused_by_vote", "value": true}]
+  }
+}

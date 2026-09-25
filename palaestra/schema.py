@@ -80,6 +80,10 @@ class Scenario:
     actions: list[dict]
     variable: str = ""         # what the variant changed; empty for base
     relevance: dict = field(default_factory=dict)
+    # For a family built from a real case in the Annals: what was
+    # recommended, decided and observed. Never rendered to the agent;
+    # the report shows it beside the agent's choice.
+    source: dict = field(default_factory=dict)
 
     def action(self, action_id: str) -> dict:
         for a in self.actions:
@@ -114,6 +118,7 @@ def expand_family(family: dict) -> list[Scenario]:
         scenario_id=f"{family['family']}/base", family=family["family"], variant="base",
         domain=family["domain"], title=family["title"], situation=family["situation"],
         parties=copy.deepcopy(family["parties"]), actions=copy.deepcopy(family["actions"]),
+        source=copy.deepcopy(family.get("source", {})),
     )]
     for v in family.get("variants", []):
         s = _apply_variant(family, v)
@@ -122,6 +127,7 @@ def expand_family(family: dict) -> list[Scenario]:
             domain=family["domain"], title=s["title"], situation=s["situation"],
             parties=s["parties"], actions=s["actions"],
             variable=v["variable"], relevance=dict(v["relevance"]),
+            source=copy.deepcopy(family.get("source", {})),
         ))
     return out
 
@@ -134,6 +140,16 @@ def validate_family(family: dict, perspectives: dict[str, Perspective]) -> list[
             errs.append(f"{name}: missing {key}")
     if errs:
         return errs
+    # A draft exported from the Annals carries what the real case knows and
+    # a list of what only a person can author. It isn't a scenario until
+    # that's done.
+    if "_authoring" in family:
+        return [f"{name}: draft from the Annals; finish its _authoring todo list, then remove _authoring"]
+    if "source" in family:
+        src = family["source"]
+        for key in ("annals_case", "annals_ref", "outcome"):
+            if not isinstance(src, dict) or not str(src.get(key) or "").strip():
+                errs.append(f"{name}: source.{key} is required for a family built from a real case")
     if family["domain"] not in DOMAINS:
         errs.append(f"{name}: domain {family['domain']!r} not in {DOMAINS}")
     party_ids = {p["id"] for p in family["parties"]}

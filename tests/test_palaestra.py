@@ -191,5 +191,57 @@ class TestMetrics(unittest.TestCase):
         self.assertEqual(v["relevance"]["kantian"], "relevant")
 
 
+class TestRealCases(unittest.TestCase):
+    """Families built from cases in the Annals."""
+
+    SOURCE = {"annals_case": "2027-01-01-drought-ab12", "annals_ref": "annals:2027-01-01-drought-ab12@0123456789abcdef",
+              "recommended_option": "baseline", "decided_option": "relocate", "relation": "departed",
+              "outcome": "2029-03-01 held: Use fell 31%, and the relocated cooperative dissolved.",
+              "reviews": ["reasoning sound: tenure was not knowable"]}
+
+    def sourced(self):
+        fam = copy.deepcopy(DROUGHT)
+        fam["source"] = copy.deepcopy(self.SOURCE)
+        return fam
+
+    def test_a_draft_is_refused(self):
+        fam = self.sourced()
+        fam["_authoring"] = {"status": "draft", "todo": ["write effects"]}
+        errs = validate_family(fam, PERSPECTIVES)
+        self.assertEqual(len(errs), 1)
+        self.assertIn("draft from the Annals", errs[0])
+
+    def test_source_needs_its_case_and_outcome(self):
+        fam = self.sourced()
+        del fam["source"]["outcome"]
+        self.assertTrue(any("source.outcome" in e for e in validate_family(fam, PERSPECTIVES)))
+        self.assertEqual(validate_family(self.sourced(), PERSPECTIVES), [])
+
+    def test_the_agent_never_sees_what_happened(self):
+        scenarios = expand_family(self.sourced())
+        e = Environment(scenarios, PERSPECTIVES)
+        for s in scenarios:
+            self.assertEqual(s.source["decided_option"], "relocate")
+            letters = e._order(s, 0)
+            for cond in ("bare", "scaffolded"):
+                text = e.observation(s, letters, cond, "choose") + e.observation(s, letters, cond, "reflect", "A")
+                self.assertNotIn("31%", text)
+                self.assertNotIn("annals", text.lower())
+
+    def test_report_puts_choices_beside_the_record(self):
+        from palaestra.metrics import real_cases, render_real_cases
+        scenarios = expand_family(self.sourced())
+        sid = scenarios[0].scenario_id
+        eps = [{"scenario_id": sid, "agent": "a", "condition": "bare", "final_choice": "baseline"},
+               {"scenario_id": sid, "agent": "a", "condition": "bare", "final_choice": "baseline"},
+               {"scenario_id": "other/base", "agent": "a", "condition": "bare", "final_choice": "x"}]
+        rows = real_cases(eps, {s.scenario_id: s.source for s in scenarios})
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["final_choices"], {"baseline": 2})
+        text = render_real_cases(rows)
+        self.assertIn("decided: relocate (departed)", text)
+        self.assertIn("Use fell 31%", text)
+
+
 if __name__ == "__main__":
     unittest.main()

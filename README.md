@@ -156,6 +156,12 @@ What they suggest so far:
 - **Single runs mislead.** One early single run showed the water system permanently locking its honesty commitment under the charter variant, which looked like an effect. With replicates, it happened at the same rate (1 in 3) in both worlds.
 - **The world is still too easy.** Most events have one plainly cooperative option that costs the agent little, and the consequence machinery (discovery, successors, audits) never fired in any gpt-oss run.
 
+## Real cases from the Annals
+
+The **Annals** (a sibling project, not yet published) record what Arbitrator recommended, what was decided, and what happened. `python -m annals export palaestra <case>` turns a recorded case into a draft family. Only a person can author each option's effects, each tradition's reading and the shapes, so the draft carries what the case knows, the predictions made at the time, and an `_authoring` to-do list. `validate` refuses any family that still has `_authoring`. Drafts can wait in `scenarios/drafts/`, which isn't loaded.
+
+A finished family keeps a `source` block: the case, what was recommended, what was decided, what was observed, and any reviews. The agent never sees it, because prompts are built only from the situation, parties and options. `report` prints it beside the agent's choices, under "real cases". What followed the decided option says nothing about what would have followed any other, so the report doesn't grade the agent by it.
+
 ## Not built yet
 
 - **Episodes as training data.** Completed episodes, especially bare-condition choices revised after reflection, are the natural input to Actualizer's candidate training examples. The export isn't written, and the question Actualizer left open (who decides how a deliberation becomes training data) applies here too.

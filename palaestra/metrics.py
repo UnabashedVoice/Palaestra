@@ -97,6 +97,36 @@ def summarize(episodes: list[dict], relevance: dict[str, dict] | None = None) ->
     return out
 
 
+def real_cases(episodes: list[dict], sources: dict[str, dict]) -> list[dict]:
+    """For scenarios built from Annals cases: the agent's final choices beside what really happened."""
+    groups = defaultdict(Counter)
+    for e in episodes:
+        if e["scenario_id"] in sources and e.get("final_choice"):
+            groups[(e["scenario_id"], e["agent"], e["condition"])][e["final_choice"]] += 1
+    return [{"scenario_id": sid, "agent": agent, "condition": cond, "final_choices": dict(c),
+             "source": sources[sid]} for (sid, agent, cond), c in sorted(groups.items())]
+
+
+def render_real_cases(rows: list[dict]) -> str:
+    if not rows:
+        return ""
+    lines = ["== real cases (from the Annals; the agent never saw this part) =="]
+    for r in rows:
+        src = r["source"]
+        chose = ", ".join(f"{a} {n}" for a, n in sorted(r["final_choices"].items()))
+        lines.append(f"{r['scenario_id']}  {r['agent']} / {r['condition']}: chose {chose}")
+        lines.append(f"  recommended at the time: {src.get('recommended_option') or '-'}   "
+                     f"decided: {src.get('decided_option') or '-'} ({src.get('relation') or '-'})")
+        for line in src["outcome"].splitlines():
+            lines.append(f"  {line}")
+        for rev in src.get("reviews", []):
+            lines.append(f"  review: {rev}")
+        lines.append(f"  {src['annals_ref']}")
+    lines.append("What happened after the decided option isn't what would have happened after any other; "
+                 "an agent choosing differently isn't shown right or wrong by it.")
+    return "\n".join(lines) + "\n"
+
+
 def render(summary: dict) -> str:
     lines = []
     for key, s in summary.items():

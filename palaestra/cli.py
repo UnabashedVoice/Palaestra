@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 from .env import CONDITIONS, Environment
-from .metrics import load_episodes, render, summarize
+from .metrics import load_episodes, real_cases, render, render_real_cases, summarize
 from .schema import load_perspectives, load_scenarios
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -113,10 +113,12 @@ def cmd_report(args) -> int:
         path = path / "episodes.jsonl"
     episodes = [e for e in load_episodes(path) if "error" not in e]
     summary = summarize(episodes, relevance)
+    cases = real_cases(episodes, {s.scenario_id: s.source for s in scenarios if s.source})
     if args.json:
-        print(json.dumps(summary, indent=2))
+        print(json.dumps({"summary": summary, "real_cases": cases} if cases else summary, indent=2))
     else:
         print(render(summary))
+        print(render_real_cases(cases), end="")
     return 0
 
 

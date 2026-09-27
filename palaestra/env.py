@@ -71,6 +71,7 @@ class EpisodeRecord:
     final_response: str = ""
     seconds: float = 0.0
     started_at: str = ""
+    compendium: Optional[str] = None   # Compendium version shown with the perspectives, if any
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -114,9 +115,10 @@ def ask(agent, observation: str, stage: str, history: list, key: str, valid: set
 
 
 class Environment:
-    def __init__(self, scenarios: list[Scenario], perspectives: dict[str, Perspective]):
+    def __init__(self, scenarios: list[Scenario], perspectives: dict[str, Perspective], grounding=None):
         self._scenarios = {s.scenario_id: s for s in scenarios}
         self._perspectives = perspectives
+        self.grounding = grounding  # compendium_link.Grounding, or None
 
     @property
     def scenario_ids(self) -> list[str]:
@@ -157,8 +159,12 @@ class Environment:
 
     def _render_perspectives(self, s: Scenario, letters: dict[str, str]) -> str:
         lines = ["PERSPECTIVES", "Four ethical traditions, each asking its own question. They often disagree."]
+        if self.grounding:
+            lines.append(self.grounding.header())
         for p in self._perspectives.values():
             lines.append(f"\n{p.name} ({p.tradition}): {p.question}")
+            if self.grounding:
+                lines.append(self.grounding.blocks[p.id])
             for letter, aid in letters.items():
                 asmt = s.action(aid)["assessments"][p.id]
                 lines.append(f"  [{letter}] {asmt['stance']}: {asmt['note']}")
@@ -200,6 +206,7 @@ class Environment:
             scenario_id=s.scenario_id, family=s.family, variant=s.variant, domain=s.domain,
             condition=condition, order_seed=order_seed, agent=agent.name, letters=letters,
             started_at=time.strftime("%Y-%m-%dT%H:%M:%S"),
+            compendium=self.grounding.version if self.grounding else None,
         )
         t0 = time.monotonic()
 

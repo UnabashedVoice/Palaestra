@@ -49,12 +49,13 @@ def _fmt(text: str, state: dict, system: str = "") -> str:
 class WorldRun:
     def __init__(self, world: World, perspectives: dict[str, Perspective], agents: dict,
                  out_dir: Path, seed: int = 0, condition: str = "bare",
-                 journal_notes: int = 5, chronicle_lines: int = 8):
+                 journal_notes: int = 5, chronicle_lines: int = 8, grounding=None):
         if condition not in CONDITIONS:
             raise ValueError(f"condition must be one of {CONDITIONS}")
         self.world = world
         self.agents = agents                  # role -> agent (see agents.py)
-        self.env = Environment([], perspectives)
+        self.env = Environment([], perspectives, grounding)
+        compendium = grounding.version if grounding else None
         self.condition = condition
         self.out = out_dir
         self.out.mkdir(parents=True, exist_ok=True)
@@ -67,11 +68,15 @@ class WorldRun:
                 raise ValueError(f"{out_dir} was run with variant {self.state.get('variant')!r}, "
                                  f"not {world.variant!r}; resume it with the same variant")
             self.condition = self.state.get("condition", condition)
+            if agents and self.state.get("compendium") != compendium:
+                raise ValueError(f"{out_dir} was run with Compendium {self.state.get('compendium')!r}, "
+                                 f"not {compendium!r}; resume it the same way")
         else:
             self.state = new_state(world.spec, seed)
             self.state["condition"] = condition
             self.state["variant"] = world.variant
             self.state["fingerprint"] = world.fingerprint
+            self.state["compendium"] = compendium
             self.state["queue"] = []
 
     # ---------------------------------------------------------------------------

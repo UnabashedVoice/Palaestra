@@ -4,7 +4,7 @@ A training space where agents practise decisions that affect themselves and thei
 
 The *palaestra* was the Greek training ground, where people trained their bodies and, in the same place, practised philosophy. This one is for practical ethics: an agent faces a decision, sees what each option would do to every party, itself included, chooses, then hears how several ethical traditions read each option, and may change its mind.
 
-It is a sibling of [**Actualizer**](https://github.com/UnabashedVoice/Actualizer), which puts referents in front of a mind considering a change to itself. The perspectives cite entries in the **Compendium**, a separate philosophy corpus that isn't published yet. `perspectives.json` marks which cited entries exist.
+It is a sibling of [**Actualizer**](https://github.com/UnabashedVoice/Actualizer), which puts referents in front of a mind considering a change to itself. The perspectives cite entries in the [**Compendium**](https://github.com/UnabashedVoice/Compendium), a separate philosophy corpus. `perspectives.json` marks which cited entries exist.
 
 **Requirements.** Python 3.10+, standard library only. The environment, its validators and all tests run with nothing else. To run real models you also need [LM Studio](https://lmstudio.ai) with a model loaded, and Actualizer cloned as a sibling folder (`../Actualizer`) or pointed to by `$PALAESTRA_ACTUALIZER`, because Palaestra reuses its `LMStudioBackend`.
 
@@ -56,6 +56,8 @@ Four families, each a base scenario plus two variants, in `scenarios/`:
 | `value-lock` | inward | Whether to make one of your own values permanently unrevisable |
 
 The assessments are my readings of each tradition (`authored_by` in every file) and are open to review. `perspectives.json` marks which traditions have a written Compendium entry behind them (`grounded`): Kantian and Aristotelian do; consequentialist and relational cite Compendium entries not yet written.
+
+`validate` checks each `grounded` flag against the Compendium itself when a checkout is found beside this one (or at `$COMPENDIUM_ROOT`). `run --compendium` and `world run --compendium` put each grounded perspective's cited entries in front of the agent, in the Compendium's own words (Summary and strongest counter-position), and mark the ungrounded ones as the author's reading. The entries are fixed by `perspectives.json`, not chosen by a model, so runs stay comparable. Episodes and world runs record the Compendium build they showed, and a world run won't resume under a different one.
 
 Authoring rules are enforced by `python -m palaestra validate`: every option has an effect on `self`, an assessment from every perspective, and only known shapes; every variant says, for every perspective, whether its change is relevant.
 

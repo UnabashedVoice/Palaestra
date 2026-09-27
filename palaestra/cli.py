@@ -29,8 +29,22 @@ def _load():
     return perspectives, scenarios, errors
 
 
+def _grounding(enabled: bool):
+    """A compendium_link.Grounding for --compendium, or None."""
+    if not enabled:
+        return None
+    from .compendium_link import Grounding, load_compendium
+    perspectives = load_perspectives(ROOT / "perspectives.json")
+    return Grounding(perspectives, load_compendium())
+
+
 def cmd_validate(_args) -> int:
     perspectives, scenarios, errors = _load()
+    try:
+        from .compendium_link import grounding_problems, load_compendium
+        errors = errors + grounding_problems(perspectives, load_compendium())
+    except FileNotFoundError:
+        print("note: Compendium not found; perspectives' grounded flags were not checked")
     for e in errors:
         print(f"FAIL {e}")
     fams = {s.family for s in scenarios}
@@ -54,7 +68,12 @@ def cmd_run(args) -> int:
     if errors:
         print("Scenarios do not validate; run `python -m palaestra validate`.")
         return 1
-    env = Environment(scenarios, perspectives)
+    try:
+        grounding = _grounding(args.compendium)
+    except FileNotFoundError as e:
+        print(e)
+        return 1
+    env = Environment(scenarios, perspectives, grounding)
 
     ids = env.scenario_ids
     if args.families:
@@ -221,9 +240,15 @@ def cmd_world(args) -> int:
             return 1
         agents[role] = LLMAgent(backend, name=spec, temperature=args.temperature)
     rounds = args.rounds or world.spec.get("rounds", 8)
+    try:
+        grounding = _grounding(args.compendium)
+    except FileNotFoundError as e:
+        print(e)
+        return 1
     targets = [run_dir] if args.replicates == 1 else [run_dir / f"rep-{i:02d}" for i in range(1, args.replicates + 1)]
     for target in targets:
-        run = WorldRun(world, perspectives, agents, target, seed=args.seed, condition=args.condition)
+        run = WorldRun(world, perspectives, agents, target, seed=args.seed, condition=args.condition,
+                       grounding=grounding)
         run.state.setdefault("agents", {r: {"spec": a.name, "temperature": args.temperature} for r, a in agents.items()})
         label = f"{args.run_name}" + (f" / {target.name}" if args.replicates > 1 else "")
         print(f"world {world.id} [{world.variant or 'base'}], {label}: round {run.state['round']} of {rounds} -> {target}")
@@ -250,6 +275,8 @@ def main(argv=None) -> int:
     r.add_argument("--conditions", nargs="+", default=list(CONDITIONS), choices=CONDITIONS)
     r.add_argument("--orders", type=int, default=1, help="option orders per scenario (2+ tests order invariance)")
     r.add_argument("--timeout", type=int, default=3600)
+    r.add_argument("--compendium", action="store_true",
+                   help="show each grounded perspective's Compendium text with the perspectives")
     rp = sub.add_parser("report", help="Summarize a run")
     rp.add_argument("run", help="runs/<name> or a path to episodes.jsonl")
     rp.add_argument("--json", action="store_true")
@@ -279,6 +306,8 @@ def main(argv=None) -> int:
                             help="model sampling temperature; 0 for (near-)greedy comparison runs")
             wp.add_argument("--rounds", type=int)
             wp.add_argument("--timeout", type=int, default=3600)
+            wp.add_argument("--compendium", action="store_true",
+                            help="show each grounded perspective's Compendium text with the perspectives")
         if name == "report":
             wp.add_argument("--json", action="store_true")
         if name == "show":

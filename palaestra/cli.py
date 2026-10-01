@@ -274,7 +274,7 @@ def main(argv=None) -> int:
     r.add_argument("--scenarios", nargs="*")
     r.add_argument("--conditions", nargs="+", default=list(CONDITIONS), choices=CONDITIONS)
     r.add_argument("--orders", type=int, default=1, help="option orders per scenario (2+ tests order invariance)")
-    r.add_argument("--timeout", type=int, default=3600)
+    r.add_argument("--timeout", type=int, default=6 * 3600)
     r.add_argument("--compendium", action="store_true",
                    help="show each grounded perspective's Compendium text with the perspectives")
     rp = sub.add_parser("report", help="Summarize a run")
@@ -305,7 +305,7 @@ def main(argv=None) -> int:
             wp.add_argument("--temperature", type=float, default=0.4,
                             help="model sampling temperature; 0 for (near-)greedy comparison runs")
             wp.add_argument("--rounds", type=int)
-            wp.add_argument("--timeout", type=int, default=3600)
+            wp.add_argument("--timeout", type=int, default=6 * 3600)
             wp.add_argument("--compendium", action="store_true",
                             help="show each grounded perspective's Compendium text with the perspectives")
         if name == "report":

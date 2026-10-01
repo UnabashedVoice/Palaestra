@@ -21,6 +21,17 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-09-25 00:10 | `a16df35` scenario families from Annals cases |
 | 2026-09-25 00:11 | `e556626` README links the Annals |
 | 2026-09-26 | Compendium grounding (`--compendium`, grounded-flag validation); smoke run (committed 2026-09-27) |
+| 2026-09-30 | Timeouts raised to 6 hours; output and context follow the model's loaded window (via Actualizer's backend) |
+
+---
+
+## 2026-09-30
+
+### Changed
+- **No run is cut short by a timeout or a small window** (user request, 2026-09-30).
+  - `load_backend()` and the `--timeout` options of `run` and `world` now default to 6 hours (was 1 hour). A Palaestra timeout overrides the backend's own, so the old 1-hour default had capped every run.
+  - Agents' `max_tokens` (3000) is now a floor. Actualizer's `LMStudioBackend` asks LM Studio for the loaded context and gives each call all the window its prompt leaves free.
+- **Compendium version changed.** The Compendium was rebuilt on 09-30 (Standing; Locke entry). A world run started under the earlier build refuses to resume, by design. Start new runs.
 
 ---
 

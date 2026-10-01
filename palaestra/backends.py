@@ -28,7 +28,7 @@ def _import_actualizer_backend():
     return backend
 
 
-def load_backend(spec: str, timeout: int = 3600):
+def load_backend(spec: str, timeout: int = 6 * 3600):
     """
     'lmstudio:<model identifier>' -> Actualizer's LMStudioBackend.
     For gpt-oss models it uses Actualizer's current local identity.

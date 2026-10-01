@@ -15,7 +15,7 @@
       "tradition": "Utilitarianism and its successors",
       "question": "Counting every being that can fare well or badly, including future ones and the agent itself, which option leaves things best overall, and at what cost to whom?",
       "compendium_entries": ["bentham-can-they-suffer", "mill-utilitarianism"],
-      "grounded": false
+      "grounded": true
     },
     {
       "id": "aristotelian",

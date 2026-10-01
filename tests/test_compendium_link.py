@@ -48,7 +48,8 @@ class TestGrounding(unittest.TestCase):
         block = env._render_perspectives(s, env._order(s, 0))
         self.assertIn("[kant-formula-of-humanity]", block)
         self.assertIn("Strongest counter-position", block)
-        self.assertIn("Not yet grounded in the Compendium", block)  # relational, consequentialist
+        self.assertIn("[mill-utilitarianism]", block)  # consequentialist, grounded since 2026-10-01
+        self.assertIn("Not yet grounded in the Compendium", block)  # relational
 
     def test_without_flag_nothing_changes(self):
         env = Environment(SCENARIOS, PERSPECTIVES)

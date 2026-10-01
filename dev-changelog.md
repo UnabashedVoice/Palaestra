@@ -22,8 +22,14 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-09-25 00:11 | `e556626` README links the Annals |
 | 2026-09-26 | Compendium grounding (`--compendium`, grounded-flag validation); smoke run (committed 2026-09-27) |
 | 2026-09-30 | Timeouts raised to 6 hours; output and context follow the model's loaded window (via Actualizer's backend) |
+| 2026-10-01 | Consequentialist perspective grounded: the Compendium now has `mill-utilitarianism` |
 
 ---
+
+## 2026-10-01
+
+- **Consequentialist perspective grounded.** The Compendium added `mill-utilitarianism` (Compendium commit of the same day), so `perspectives.json` now marks `consequentialist` as `grounded: true`, and its block carries Mill's level-1 brief. `bentham-can-they-suffer` is still planned and is picked up automatically when written. Relational stays ungrounded.
+- **Test:** `test_perspectives_block_carries_corpus_text` now checks that Mill's entry appears in the block; its comment had still listed consequentialist as ungrounded. 58 tests OK.
 
 ## 2026-09-30
 

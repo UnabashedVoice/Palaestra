@@ -36,7 +36,7 @@ class TestGrounding(unittest.TestCase):
 
     def test_wrong_flag_is_caught(self):
         wrong = dict(PERSPECTIVES)
-        wrong["relational"] = dataclasses.replace(PERSPECTIVES["relational"], grounded=True)
+        wrong["relational"] = dataclasses.replace(PERSPECTIVES["relational"], grounded=not PERSPECTIVES["relational"].grounded)
         self.assertEqual(len(grounding_problems(wrong, self.comp)), 1)
 
     def test_perspectives_block_carries_corpus_text(self):
@@ -49,7 +49,8 @@ class TestGrounding(unittest.TestCase):
         self.assertIn("[kant-formula-of-humanity]", block)
         self.assertIn("Strongest counter-position", block)
         self.assertIn("[mill-utilitarianism]", block)  # consequentialist, grounded since 2026-10-01
-        self.assertIn("Not yet grounded in the Compendium", block)  # relational
+        self.assertIn("[care-ethics]", block)  # relational, grounded since 2026-10-02 (ubuntu still planned)
+        self.assertNotIn("Not yet grounded in the Compendium", block)  # every perspective is now grounded
 
     def test_without_flag_nothing_changes(self):
         env = Environment(SCENARIOS, PERSPECTIVES)

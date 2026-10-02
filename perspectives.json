@@ -31,7 +31,7 @@
       "tradition": "Care ethics and Ubuntu",
       "question": "What does this do to the relationships of dependence and mutual recognition the parties live within? Who is cared for, who is abandoned, and who can still face whom afterwards?",
       "compendium_entries": ["care-ethics", "ubuntu"],
-      "grounded": false
+      "grounded": true
     }
   ]
 }

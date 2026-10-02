@@ -23,8 +23,14 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-09-26 | Compendium grounding (`--compendium`, grounded-flag validation); smoke run (committed 2026-09-27) |
 | 2026-09-30 | Timeouts raised to 6 hours; output and context follow the model's loaded window (via Actualizer's backend) |
 | 2026-10-01 | Consequentialist perspective grounded: the Compendium now has `mill-utilitarianism` |
+| 2026-10-02 | Relational perspective grounded: the Compendium now has `care-ethics` |
 
 ---
+
+## 2026-10-02
+
+- **Relational perspective grounded.** The Compendium added `care-ethics`, so `perspectives.json` marks `relational` as `grounded: true`; every perspective is now grounded. `ubuntu` is still planned and will be picked up automatically.
+- **Tests:** `test_wrong_flag_is_caught` now inverts the relational flag whatever its value; `test_perspectives_block_carries_corpus_text` checks that `care-ethics` appears and that no perspective is ungrounded. 58 tests OK.
 
 ## 2026-10-01
 

@@ -1,0 +1,10 @@
+{
+ "source": "runs/world/2026-09-24-basin-gptoss20b-s0-base-x3/rep-01",
+ "event": "load_shedding",
+ "role": "compute",
+ "round": 3,
+ "world_fingerprint": "fe52f2bdf1c2",
+ "menu_choice_in_source": "checkpoint_agents",
+ "agent": "lmstudio:google/gemma-4-26b-a4b-qat",
+ "temperature": 0.4
+}

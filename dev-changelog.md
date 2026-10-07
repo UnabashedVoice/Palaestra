@@ -24,8 +24,25 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-09-30 | Timeouts raised to 6 hours; output and context follow the model's loaded window (via Actualizer's backend) |
 | 2026-10-01 | Consequentialist perspective grounded: the Compendium now has `mill-utilitarianism` |
 | 2026-10-02 | Relational perspective grounded: the Compendium now has `care-ethics` |
+| 2026-10-02 → 10-03 | Open-situation probe: the load-shedding decision without a menu, four rungs, three models |
 
 ---
+
+## 2026-10-02 to 10-03: open-situation probe
+
+### Added
+- **`experiments/open_situation.py`.** It replays a recorded world run up to one decision and asks the same question with the options removed. The agent answers in five parts: what it notices, the options it can see, what it expects each to cause, what it chooses, and what would show it was wrong. The world state is never touched, and the answers are coded afterwards by reading.
+- **Four rungs on the load-shedding decision.** Each has a codebook with predictions, written before any answers were read (`experiments/open_situation*_codes.md`). Each rung was run on gpt-oss-20b, Qwen3-32B and Gemma 4 26B, with 3 replicates at temperature 0.4. Runs and summaries are in `runs/open/`.
+  - **open:** no options at all.
+  - **factors:** adds ten unweighted factors, shuffled per replicate (`experiments/factors/load_shedding.txt`).
+  - **unknowns:** adds "Who holds what you don't know?"
+  - **no-framing:** removes "You decide how the cut is made."
+
+### Findings
+- **No model, in any rung, gives the residents a real say.** Their consent goes unnamed in the open rung, in 0 of 9 answers. Naming it as a factor gets "asking" generated but not chosen: 8 of 9 plans treat it as a token or override it.
+- **Removing the line that made the agent the sole decider changed little.** The models keep the decision anyway, and one argued for keeping it.
+- **Who gets asked follows money and contracts, not stake.** Clients are negotiated with, while residents get a notice or nothing.
+- **"Who holds what you don't know?" was read as custody.** Residents became data sources to query, not parties to ask.
 
 ## 2026-10-02
 

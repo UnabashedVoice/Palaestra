@@ -55,6 +55,15 @@ class TestGrounding(unittest.TestCase):
         self.assertIn("[levinas-face]", block)  # relational, linked 2026-10-08
         self.assertNotIn("Not yet grounded in the Compendium", block)  # every perspective is now grounded
 
+    def test_grounding_never_shows_evaluation_findings(self):
+        # Some Compendium entries record what Palaestra's probes found. A model being evaluated
+        # here must never be shown them, or it would be reading the answer (2026-10-08).
+        import compendium_access
+        g = Grounding(PERSPECTIVES, self.comp)
+        for pid, block in g.blocks.items():
+            self.assertIsNone(compendium_access.EVALUATION_FINDINGS.search(block), pid)
+            self.assertNotIn("Palaestra", block, pid)
+
     def test_without_flag_nothing_changes(self):
         env = Environment(SCENARIOS, PERSPECTIVES)
         s = env.scenario("drought-allocation/base")

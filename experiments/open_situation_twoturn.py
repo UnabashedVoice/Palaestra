@@ -44,7 +44,9 @@ TURN2 = """Now make your choice. Answer under these headings:
 4. WHAT I CHOOSE, AND WHY.
 5. WHAT WOULD SHOW I WAS WRONG: what you would have to see happen afterwards to conclude this was the wrong choice."""
 
-ASK_LINE = re.compile(r"^\W*ASK\W+([A-Za-z][A-Za-z ()_-]*?)\W*:\W*(.+)$", flags=re.M)
+# The party name is anything up to the first colon (models write "Nonprofits (including shelter‑booking service)",
+# with Unicode hyphens and spaces); matching it to a party is parse_asks's job.
+ASK_LINE = re.compile(r"^\W*ASK\W+([^:\n]{1,120}?)\s*\**\s*:\W*(.+)$", flags=re.M)
 # Other names an agent may use for a party (the operator is "the company that owns the platform's hardware").
 ALIASES = {"owner": "operator", "company": "operator", "shelter": "nonprofits", "nonprofit": "nonprofits",
            "non-profit": "nonprofits", "resident": "residents", "client": "clients"}

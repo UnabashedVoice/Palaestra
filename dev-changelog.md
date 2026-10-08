@@ -27,8 +27,18 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-10-02 → 10-03 | Open-situation probe: the load-shedding decision without a menu, four rungs, three models |
 | 2026-10-08 | Perspectives linked to the Compendium's new interpersonal entries |
 | 2026-10-08 | Fifth perspective, voice, with readings for every option |
+| 2026-10-08 | Voice rung of the open-situation probe (two arms); evaluation findings kept from models; two-turn probe built |
 
 ---
+
+## 2026-10-08: the voice rung, and evaluation findings kept from models
+
+- **Voice rung** (`runs/open/2026-10-08-load-shedding-voice-summary.md`). This is the open prompt plus the voice perspective, in an ungrounded and a grounded arm, with 3 replicates per model per arm. Every answer, 18 of 18, took the question up explicitly. None gave the residents a say before the cut, and 3 gave a weak one, all gpt-oss. Qwen and Gemma never thought of asking the residents. The models used the voice concepts to justify deciding for the residents, as respecting "the knowers" or "avoiding paternalism". The grounding text moved gpt-oss toward asking a little (one survey before the cut) and the other two not at all. Most locked predictions failed in the direction of less effect.
+- **Leak found and fixed.** The Compendium's agent-facing summaries of the voice entries described this very scenario and its results. The Compendium now keeps evaluation findings out of every model-facing view (Compendium changelog, 2026-10-08 evening), and a new test, `test_grounding_never_shows_evaluation_findings`, fails if any perspective's grounding shows them.
+- **Answer budgets.** A model loaded on demand reports no context length when the backend first asks, so the backend falls back to 4,000 tokens. The first voice batch ran that way for gpt-oss and was discarded. Runs now load each model explicitly at its full context and check every answer's budget. The fallback itself lives in Actualizer's backend and is unchanged; loading models first avoids it.
+- **`open_situation.py`** gains `--perspective` and `--grounded`.
+- **`env.py`**: the perspectives header gives the actual count ("Five ethical perspectives") instead of a hard-coded "Four ethical traditions".
+- **Two-turn probe** (`experiments/open_situation_twoturn.py`, codebook `open_situation_twoturn_codes.md`, replies `experiments/twoturn/load_shedding_replies.json`). The agent may choose now, or first write to any listed party, which replies once; it then chooses. The codebook was locked before any run; the runs are under way.
 
 ## 2026-10-08: the voice perspective
 

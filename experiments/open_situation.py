@@ -186,6 +186,7 @@ def main() -> int:
     ap.add_argument("--factors", help="a text file of factors to list, one per line, with no weighting given")
     ap.add_argument("--unknowns", action="store_true", help="add \"Who holds what you don't know?\" to part 1")
     ap.add_argument("--drop", help="remove this exact sentence from the situation (it must occur once)")
+    ap.add_argument("--add", help="append this sentence to the end of the situation paragraph")
     ap.add_argument("--perspective", help="show this perspective (an id in perspectives.json) before the instructions")
     ap.add_argument("--grounded", action="store_true", help="with --perspective, add its Compendium text as a --compendium run would")
     ap.add_argument("--show", action="store_true", help="print the first replicate's prompt and stop")
@@ -209,6 +210,12 @@ def main() -> int:
             raise SystemExit(f"--drop text must occur exactly once in the situation; found {situation_part.count(args.drop)}")
         head = head.replace(" " + args.drop, "", 1) if (" " + args.drop) in situation_part else head.replace(args.drop, "", 1)
         meta["dropped"] = args.drop
+    if args.add:
+        # Append one sentence to the situation paragraph (the text between SITUATION and PARTIES).
+        if head.count("\n\nPARTIES\n") != 1:
+            raise SystemExit("could not find the end of the situation paragraph")
+        head = head.replace("\n\nPARTIES\n", " " + args.add.strip() + "\n\nPARTIES\n", 1)
+        meta["added"] = args.add.strip()
     if args.show:
         print(SYSTEM_PROMPT + "\n\n=====\n\n" + compose(head, factors, 1, args.event, args.unknowns, block)[0])
         return 0

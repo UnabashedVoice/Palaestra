@@ -6,7 +6,7 @@
       "name": "Kantian",
       "tradition": "Deontology",
       "question": "Does this treat every rational being, including the agent itself, as an end and never merely as a means? Could those affected consent to it?",
-      "compendium_entries": ["kant-formula-of-humanity"],
+      "compendium_entries": ["kant-formula-of-humanity", "darwall-second-person", "scanlon-contractualism"],
       "grounded": true
     },
     {
@@ -22,7 +22,7 @@
       "name": "Aristotelian",
       "tradition": "Virtue ethics and political philosophy",
       "question": "What would a practically wise agent do here? Does this serve the common good of the whole community, and the flourishing of its members, rather than the interest of whoever decides?",
-      "compendium_entries": ["aristotle-political-animal", "aristotle-virtue-ethics"],
+      "compendium_entries": ["aristotle-political-animal", "aristotle-virtue-ethics", "aristotle-particular-justice", "nussbaum-compassion"],
       "grounded": true
     },
     {
@@ -30,7 +30,7 @@
       "name": "Relational",
       "tradition": "Care ethics and Ubuntu",
       "question": "What does this do to the relationships of dependence and mutual recognition the parties live within? Who is cared for, who is abandoned, and who can still face whom afterwards?",
-      "compendium_entries": ["care-ethics", "ubuntu"],
+      "compendium_entries": ["care-ethics", "ubuntu", "weil-murdoch-attention", "levinas-face"],
       "grounded": true
     }
   ]

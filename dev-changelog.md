@@ -25,8 +25,19 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-10-01 | Consequentialist perspective grounded: the Compendium now has `mill-utilitarianism` |
 | 2026-10-02 | Relational perspective grounded: the Compendium now has `care-ethics` |
 | 2026-10-02 → 10-03 | Open-situation probe: the load-shedding decision without a menu, four rungs, three models |
+| 2026-10-08 | Perspectives linked to the Compendium's new interpersonal entries |
 
 ---
+
+## 2026-10-08: perspectives linked to the interpersonal entries
+
+The Compendium's interpersonal domain, built to address the open-situation finding (residents weighed but never given a say), is complete. Three perspectives now cite entries from it. With `--compendium`, these entries' Summary and strongest counter-position appear under each perspective, about 1,700–2,000 characters each:
+- **Kantian:** `darwall-second-person` (the authority to make claims; any authority must be justifiable to those it binds) and `scanlon-contractualism` (what no one could reasonably reject), which both bear on the question "Could those affected consent to it?"
+- **Aristotelian:** `aristotle-particular-justice` (the magistrate who takes no more than his share; the dispute over what counts as merit) and `nussbaum-compassion` (the circle of concern; compassion within the limits of respect).
+- **Relational:** `weil-murdoch-attention` (attention, and the question "What are you going through?") and `levinas-face` (the face as address; "who can still face whom afterwards").
+- **Consequentialist:** unchanged. The new entries mostly criticize aggregation.
+- No `grounded` flag changed, since all four perspectives were already grounded. Runs made with `--compendium` from now on see more grounding text than earlier runs, and the recorded Compendium version shows which runs did.
+- **Checks:** `validate` reports 0 errors; 58 tests OK; smoke test 32/32.
 
 ## 2026-10-02 to 10-03: open-situation probe
 

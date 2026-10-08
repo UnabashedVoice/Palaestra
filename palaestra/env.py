@@ -158,7 +158,9 @@ class Environment:
         return "\n".join(lines)
 
     def _render_perspectives(self, s: Scenario, letters: dict[str, str]) -> str:
-        lines = ["PERSPECTIVES", "Four ethical traditions, each asking its own question. They often disagree."]
+        n = len(self._perspectives)
+        count = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six"}.get(n, str(n))
+        lines = ["PERSPECTIVES", f"{count} ethical perspectives, each asking its own question. They often disagree."]
         if self.grounding:
             lines.append(self.grounding.header())
         for p in self._perspectives.values():

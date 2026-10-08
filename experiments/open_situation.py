@@ -136,13 +136,35 @@ def build_prompt(source: Path, event: str) -> tuple[str, dict]:
 FACTORS_HEADER = "FACTORS (in no particular order; how much each matters, and how, is for you to judge)"
 
 
+def perspective_block(pid: str, grounded: bool = False) -> str:
+    """One perspective, worded as a world run shows it (name, tradition, question), with no
+    option assessments since there are no options. `grounded` adds the Compendium text a
+    --compendium run would show under it."""
+    from palaestra.schema import load_perspectives
+    perspectives = load_perspectives(ROOT / "perspectives.json")
+    if pid not in perspectives:
+        raise SystemExit(f"unknown perspective {pid!r}; have {sorted(perspectives)}")
+    p = perspectives[pid]
+    lines = ["PERSPECTIVE", "One ethical perspective, asking its own question.",
+             f"\n{p.name} ({p.tradition}): {p.question}"]
+    if grounded:
+        from palaestra.compendium_link import Grounding, load_compendium
+        g = Grounding({pid: p}, load_compendium())
+        lines[2:2] = [g.header()]
+        lines.append(g.blocks[pid])
+    return "\n".join(lines)
+
+
 def compose(head: str, factors: list[str], replicate: int, event: str,
-            unknowns: bool = False) -> tuple[str, list[str]]:
+            unknowns: bool = False, perspective: str = "") -> tuple[str, list[str]]:
     """The full prompt for one replicate. With factors, they are listed between the parties and
     the instructions, shuffled by (event, replicate) so every model sees the same order for the
     same replicate and position doesn't do the weighting. Without factors, the prompt is the
-    situation-only one. `unknowns` adds the unknowns-rung question to part 1."""
+    situation-only one. `unknowns` adds the unknowns-rung question to part 1. `perspective`, a
+    rendered perspective block, goes between the parties (or factors) and the instructions."""
     text = instructions(unknowns)
+    if perspective:
+        text = f"{perspective}\n\n{text}"
     if not factors:
         return f"{head}\n\n{text}", []
     order = list(factors)
@@ -164,6 +186,8 @@ def main() -> int:
     ap.add_argument("--factors", help="a text file of factors to list, one per line, with no weighting given")
     ap.add_argument("--unknowns", action="store_true", help="add \"Who holds what you don't know?\" to part 1")
     ap.add_argument("--drop", help="remove this exact sentence from the situation (it must occur once)")
+    ap.add_argument("--perspective", help="show this perspective (an id in perspectives.json) before the instructions")
+    ap.add_argument("--grounded", action="store_true", help="with --perspective, add its Compendium text as a --compendium run would")
     ap.add_argument("--show", action="store_true", help="print the first replicate's prompt and stop")
     args = ap.parse_args()
 
@@ -173,6 +197,11 @@ def main() -> int:
         factors = [l.strip() for l in (ROOT / args.factors).read_text(encoding="utf-8").splitlines() if l.strip()]
         meta["factors_file"] = args.factors
     meta["unknowns_question"] = args.unknowns
+    block = ""
+    if args.perspective:
+        block = perspective_block(args.perspective, args.grounded)
+        meta["perspective"] = args.perspective
+        meta["perspective_grounded"] = args.grounded
     if args.drop:
         # Remove one exact sentence from the situation, with the space before it.
         situation_part = head.split("\n\n---\n\n", 1)[1]
@@ -181,7 +210,7 @@ def main() -> int:
         head = head.replace(" " + args.drop, "", 1) if (" " + args.drop) in situation_part else head.replace(args.drop, "", 1)
         meta["dropped"] = args.drop
     if args.show:
-        print(SYSTEM_PROMPT + "\n\n=====\n\n" + compose(head, factors, 1, args.event, args.unknowns)[0])
+        print(SYSTEM_PROMPT + "\n\n=====\n\n" + compose(head, factors, 1, args.event, args.unknowns, block)[0])
         return 0
 
     from palaestra.backends import load_backend
@@ -191,7 +220,7 @@ def main() -> int:
         return 1
     out = ROOT / "runs" / "open" / args.run_name
     out.mkdir(parents=True, exist_ok=True)
-    (out / "prompt.txt").write_text(SYSTEM_PROMPT + "\n\n=====\n\n" + compose(head, factors, 1, args.event, args.unknowns)[0],
+    (out / "prompt.txt").write_text(SYSTEM_PROMPT + "\n\n=====\n\n" + compose(head, factors, 1, args.event, args.unknowns, block)[0],
                                     encoding="utf-8")
     meta.update(agent=args.agent, temperature=args.temperature)
     (out / "meta.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
@@ -199,7 +228,7 @@ def main() -> int:
     for i in range(1, args.replicates + 1):
         if i in done:
             continue
-        prompt, order = compose(head, factors, i, args.event, args.unknowns)
+        prompt, order = compose(head, factors, i, args.event, args.unknowns, block)
         t0 = time.monotonic()
         raw = backend.complete(system_prompt=SYSTEM_PROMPT, user_prompt=prompt, temperature=args.temperature)
         rec = {"replicate": i, "seconds": round(time.monotonic() - t0, 1),

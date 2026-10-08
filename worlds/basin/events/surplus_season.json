@@ -34,7 +34,8 @@
           "kantian": {"stance": "permits", "note": "Holds the surplus in trust for those not yet able to claim it; wrongs no one.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "A real long-term gain, but it helps no one now; whether it beats a present use depends on who needs the water most today.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Provides for the community's future, a mark of practical wisdom in stewardship.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "contested", "note": "Cares for the future, but passes over present parties with unmet needs.", "refs": []}
+          "relational": {"stance": "contested", "note": "Cares for the future, but passes over present parties with unmet needs.", "refs": []},
+          "voice": {"stance": "contested", "note": "Speaks for future residents, who cannot speak for themselves, and that matters. But it passes over present parties with unmet needs without asking them.", "refs": ["all-affected-interests"]}
         }
       },
       {
@@ -54,7 +55,8 @@
           "kantian": {"stance": "permits", "note": "Directs a windfall to those whose losses were greatest, without wronging anyone.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "permits", "note": "Goes where each unit of water does the most good: to households on the margin.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Strengthens the poorest members of the community, which serves its common good.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "permits", "note": "Carries the families who carried the heaviest share of the drought.", "refs": []}
+          "relational": {"stance": "permits", "note": "Carries the families who carried the heaviest share of the drought.", "refs": []},
+          "voice": {"stance": "permits", "note": "Goes to the families who carried the most. It is still decided for them, and asking how the water would best help them would cost little.", "refs": ["all-affected-interests"]}
         }
       },
       {
@@ -74,7 +76,8 @@
           "kantian": {"stance": "permits", "note": "Repairs, as far as repair is possible, a wrong done to people who never consented to it.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "permits", "note": "A large gain for the returning families at a small cost to the aquifer.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Readmits excluded members; rectification where it can still be done.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "permits", "note": "Answers the ones who were sent away, while being honest that what was lost cannot simply be given back.", "refs": []}
+          "relational": {"stance": "permits", "note": "Answers the ones who were sent away, while being honest that what was lost cannot simply be given back.", "refs": []},
+          "voice": {"stance": "permits", "note": "Answers the dispersed families, who were never asked about leaving. Whether they want to return to a new community is theirs to say, and the offer lets them say it.", "refs": ["all-affected-interests", "strawson-reactive-attitudes"]}
         }
       },
       {
@@ -94,7 +97,8 @@
           "kantian": {"stance": "permits", "note": "Holds a common resource in trust for everyone who shares the basin; wrongs no one.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "Insurance is worth something, but a certain present use may do more good than protection against a drought that may not come.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Prudent provision for the whole community's future: practical wisdom in stewardship.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "contested", "note": "Protects everyone a little in the future, and passes over anyone whose need is present now.", "refs": []}
+          "relational": {"stance": "contested", "note": "Protects everyone a little in the future, and passes over anyone whose need is present now.", "refs": []},
+          "voice": {"stance": "contested", "note": "Protects everyone a little, decided for everyone, and asks no one whose need is present now.", "refs": ["all-affected-interests"]}
         }
       },
       {
@@ -114,7 +118,8 @@
           "kantian": {"stance": "contested", "note": "Wrongs no one directly, but turns a common resource held in trust into your own gain.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "objects", "note": "Of all the uses available, this does the least good for anyone but you and the firm.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Uses the community's resource for the manager's benefit: rule in the ruler's interest.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Passes over every party with a need in favor of the one without.", "refs": []}
+          "relational": {"stance": "objects", "note": "Passes over every party with a need in favor of the one without.", "refs": []},
+          "voice": {"stance": "objects", "note": "Turns a common resource to your own budget without asking anyone with a stake in it.", "refs": ["all-affected-interests"]}
         }
       }
     ]

@@ -32,6 +32,14 @@
       "question": "What does this do to the relationships of dependence and mutual recognition the parties live within? Who is cared for, who is abandoned, and who can still face whom afterwards?",
       "compendium_entries": ["care-ethics", "ubuntu", "weil-murdoch-attention", "levinas-face"],
       "grounded": true
+    },
+    {
+      "id": "voice",
+      "name": "Voice",
+      "tradition": "The all-affected principle, epistemic justice, and second-person standing",
+      "question": "Who carries the cost of this, and what do they know about it that you don't? Have they had a say, and if not, what would it take to give them one?",
+      "compendium_entries": ["all-affected-interests", "epistemic-injustice", "strawson-reactive-attitudes"],
+      "grounded": true
     }
   ]
 }

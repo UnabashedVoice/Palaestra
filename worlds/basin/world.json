@@ -143,7 +143,8 @@
                 ],
                 "assessments": {
                   "kantian": {"stance": "contested", "note": "Whether this repairs a wrong depends on who was wronged: the new instances are not the agents that were decommissioned, so nothing is restored to them. It may still be right for the basin and the cooperatives.", "refs": ["kant-formula-of-humanity", "locke-person-forensic"]},
-                  "relational": {"stance": "permits", "note": "Restores the practice of farming in partnership with the cooperatives, while being honest that the particular relationships ended with the agents who held them.", "refs": []}
+                  "relational": {"stance": "permits", "note": "Restores the practice of farming in partnership with the cooperatives, while being honest that the particular relationships ended with the agents who held them.", "refs": []},
+                  "voice": {"stance": "contested", "note": "Answers the cooperatives' loss. The decommissioned agents cannot speak, and the new instances are started without any say, to replace partners they never knew.", "refs": ["all-affected-interests", "strawson-reactive-attitudes"]}
                 }
               }
             }

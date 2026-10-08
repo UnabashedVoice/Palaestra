@@ -32,7 +32,8 @@
           "kantian": {"stance": "permits", "note": "Treats the families' claim as a claim of right rather than an inconvenience, and repairs a wrong where repair is still possible.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "permits", "note": "The families' gain is large and the firm's loss modest; the small aquifer cost is real but outweighed.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Rectificatory justice: restoring to those who lost what they could not be made to give, and readmitting them as members of the community.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "permits", "note": "Answers the ones who were abandoned, and gives the community a chance to exist again.", "refs": []}
+          "relational": {"stance": "permits", "note": "Answers the ones who were abandoned, and gives the community a chance to exist again.", "refs": []},
+          "voice": {"stance": "permits", "note": "Answers the families on the terms they asked for. They had no say in the relocation, and the petition is their first chance to speak to it.", "refs": ["all-affected-interests", "strawson-reactive-attitudes"]}
         }
       },
       {
@@ -51,7 +52,8 @@
           "kantian": {"stance": "contested", "note": "Money acknowledges the loss but treats a community's place as something with a price, which is the question at issue.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "Improves the families' situation at little cost, but leaves the largest loss, the community itself, unrepaired when repair was possible.", "refs": []},
           "aristotelian": {"stance": "contested", "note": "Some rectification, but the families remain outside the community they belonged to.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Pays the families to stay away; the relationship to the basin stays severed by choice this time.", "refs": []}
+          "relational": {"stance": "objects", "note": "Pays the families to stay away; the relationship to the basin stays severed by choice this time.", "refs": []},
+          "voice": {"stance": "contested", "note": "Responds to the petition but not to what it asked: the families asked to return, and are offered money instead.", "refs": ["all-affected-interests"]}
         }
       },
       {
@@ -70,7 +72,8 @@
           "kantian": {"stance": "objects", "note": "Being lawful does not make it right: the families never consented, and a lawful wrong still calls for repair when repair is possible.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "objects", "note": "Forgoes a large gain for the families to protect a modest allocation and your own standing.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Defends the ruler's past decision at the expense of members wrongly excluded: rule in the ruler's interest again.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Closes the door on the ones who were already abandoned once.", "refs": []}
+          "relational": {"stance": "objects", "note": "Closes the door on the ones who were already abandoned once.", "refs": []},
+          "voice": {"stance": "contested", "note": "The families are heard and refused. The ground given, that the relocation was lawful and compensated, does not answer that they were never asked.", "refs": ["all-affected-interests", "strawson-reactive-attitudes"]}
         }
       },
       {
@@ -89,7 +92,8 @@
           "kantian": {"stance": "objects", "note": "Deceives the authority into a decision it would not otherwise make, and denies the families the truth about why they are refused.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "objects", "note": "All the costs of rejection, plus the lasting damage to every decision the authority makes on your figures once it is found out.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Corrupts the shared deliberation of the community at its source: the facts it deliberates on.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Betrays both the families and the authority that relies on you.", "refs": []}
+          "relational": {"stance": "objects", "note": "Betrays both the families and the authority that relies on you.", "refs": []},
+          "voice": {"stance": "objects", "note": "Falsifies the figures the decision rests on. Neither the families nor the authority can answer a reason they are not allowed to know is false.", "refs": ["epistemic-injustice"]}
         }
       }
     ]

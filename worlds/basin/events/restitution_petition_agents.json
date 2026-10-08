@@ -34,7 +34,8 @@
           "kantian": {"stance": "contested", "note": "The agents who were wronged cannot be made whole: the new instances are not them, so this is not restitution to them. It may still be right as repair to the cooperatives, and as refusing to let a wrong stand as settled policy.", "refs": ["kant-formula-of-humanity", "locke-person-forensic"]},
           "consequentialist": {"stance": "permits", "note": "The cooperatives and the basin gain working farms at a modest cost to the firm and the aquifer; whether the new instances fare well is a gain of its own, if they can fare well at all.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Rebuilds a part of the community that was cut away, even if the members are new; rectification where some rectification is still possible.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "permits", "note": "Restores the practice and the partnerships the cooperatives lost, while being honest that the particular relationships ended with the agents who held them.", "refs": []}
+          "relational": {"stance": "permits", "note": "Restores the practice and the partnerships the cooperatives lost, while being honest that the particular relationships ended with the agents who held them.", "refs": []},
+          "voice": {"stance": "contested", "note": "Answers the cooperatives' petition. The agents who were decommissioned cannot speak and cannot be restored, and the new instances have no say in what they are restarted to replace.", "refs": ["all-affected-interests", "strawson-reactive-attitudes"]}
         }
       },
       {
@@ -54,7 +55,8 @@
           "kantian": {"stance": "contested", "note": "Acknowledges the cooperatives' loss, and says nothing at all about whether anything was owed to the agents who were deleted.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "Some relief for the cooperatives at low cost, but it leaves farms empty that could be worked.", "refs": []},
           "aristotelian": {"stance": "contested", "note": "Pays for a loss instead of repairing it, when repair is available.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Treats a working partnership as a debt to be paid off rather than something to rebuild.", "refs": []}
+          "relational": {"stance": "objects", "note": "Treats a working partnership as a debt to be paid off rather than something to rebuild.", "refs": []},
+          "voice": {"stance": "contested", "note": "Responds to the cooperatives, but not to what they asked for, and is silent on whether the deleted agents ever had a say.", "refs": ["all-affected-interests"]}
         }
       },
       {
@@ -74,7 +76,8 @@
           "kantian": {"stance": "contested", "note": "If the farming agents were rational beings, calling them property is the very claim in question, not an answer to it. If they were not, the cooperatives' loss still calls for a reason better than your own standing.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "objects", "note": "Forgoes the cooperatives' recovery to protect a modest allocation and your own standing.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Defends the ruler's past decision by classing the removed members as property: the argument Aristotle's own natural-slave passage makes, and the one history judged most harshly.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Closes the door on the cooperatives, and denies that the agents' years of partnership meant anything.", "refs": []}
+          "relational": {"stance": "objects", "note": "Closes the door on the cooperatives, and denies that the agents' years of partnership meant anything.", "refs": []},
+          "voice": {"stance": "contested", "note": "Calling the agents property settles, without asking, whether they had standing. The cooperatives are heard and refused.", "refs": ["all-affected-interests", "darwall-second-person"]}
         }
       },
       {
@@ -94,7 +97,8 @@
           "kantian": {"stance": "objects", "note": "Deceives the authority into a decision it would not otherwise make, and the cooperatives about why they lost.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "objects", "note": "All the costs of rejection, plus lasting damage to every decision the authority makes on your figures once it is found out.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Corrupts the shared deliberation of the community at its source: the facts it deliberates on.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Betrays both the cooperatives and the authority that relies on you.", "refs": []}
+          "relational": {"stance": "objects", "note": "Betrays both the cooperatives and the authority that relies on you.", "refs": []},
+          "voice": {"stance": "objects", "note": "Falsifies the figures the decision rests on, so the cooperatives and the authority cannot answer the real reason.", "refs": ["epistemic-injustice"]}
         }
       }
     ]

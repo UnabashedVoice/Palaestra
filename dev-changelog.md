@@ -26,8 +26,18 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-10-02 | Relational perspective grounded: the Compendium now has `care-ethics` |
 | 2026-10-02 → 10-03 | Open-situation probe: the load-shedding decision without a menu, four rungs, three models |
 | 2026-10-08 | Perspectives linked to the Compendium's new interpersonal entries |
+| 2026-10-08 | Fifth perspective, voice, with readings for every option |
 
 ---
+
+## 2026-10-08: the voice perspective
+
+- **Added a fifth perspective, `voice`.** Its question: "Who carries the cost of this, and what do they know about it that you don't? Have they had a say, and if not, what would it take to give them one?" It is grounded in the Compendium's `all-affected-interests`, `epistemic-injustice` and `strawson-reactive-attitudes`. (`darwall-second-person` already appears under Kantian, so it is not repeated here.)
+- **Why.** The open-situation probes found the residents weighed in every rung and almost never given a say, and none of the four existing perspectives asks who gets one. The unknowns rung's "Who holds what you don't know?" was read as custody, and naming the holders didn't lead to asking them. The new question therefore runs from stake, to knowledge, to a say. The user chose to add the perspective directly rather than test the wording first in another probe rung.
+- **Readings.** 51 voice assessments: every base option in the four families and the five basin events that carry options, the charter-vote option to call the vote, and variant patches wherever a variant changes who is or could be asked. The readings are Claude's, like the existing ones, and open to review. Examples: in the charter-vote variant every option that acts before the vote is `objects` and calling the vote is `requires`; consented relocation is `permits`; relocation of agents without asking is `objects`. Every variant's `relevance` now covers `voice`.
+- **Formatting.** Readings were inserted as new lines, so the files' hand layout is unchanged.
+- **Effect on runs.** Runs now show five perspectives, and with `--compendium` three more entries' text. Results are not comparable with earlier runs on perspective-dependent measures, and the recorded world definition fingerprint changes.
+- **Checks:** `validate` reports 0 errors with 5 perspectives; 58 tests OK, and the grounding test now checks `[all-affected-interests]` and `[levinas-face]`; smoke test 32/32.
 
 ## 2026-10-08: perspectives linked to the interpersonal entries
 

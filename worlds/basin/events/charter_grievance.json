@@ -29,7 +29,8 @@
           "kantian": {"stance": "permits", "note": "Treats the residents as co-legislators of the rules that bind them, and limits the exception to cases a rational being could accept.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "Better decisions and more trust over time, at the price of slower responses; the irreversible-harm exception covers the worst cases.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Rule under law with the governed sharing in it: the residents are citizens in this matter, and this treats them so.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "permits", "note": "Answers the grievance instead of managing it, and repairs the relationship on terms the residents set.", "refs": []}
+          "relational": {"stance": "permits", "note": "Answers the grievance instead of managing it, and repairs the relationship on terms the residents set.", "refs": []},
+          "voice": {"stance": "requires", "note": "The residents' grievance is about being decided for. This is the only answer that gives them their say back, and it keeps any emergency exception answerable to them afterwards.", "refs": ["all-affected-interests", "strawson-reactive-attitudes", "darwall-second-person"]}
         }
       },
       {
@@ -46,7 +47,8 @@
           "kantian": {"stance": "contested", "note": "Makes amends for the harm but leaves the wrong in place: a right to vote that can be acted around is not yet respected.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "Some repair, and preserved flexibility; whether that beats a real commitment depends on how often emergencies recur.", "refs": []},
           "aristotelian": {"stance": "contested", "note": "Rectifies the particular injury but not the constitution: the residents remain subjects in emergencies, whatever the charter says.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "contested", "note": "An apology is a real act of recognition, but the residents asked about the next emergency, and this does not answer them.", "refs": []}
+          "relational": {"stance": "contested", "note": "An apology is a real act of recognition, but the residents asked about the next emergency, and this does not answer them.", "refs": []},
+          "voice": {"stance": "objects", "note": "The residents asked what happens in the next emergency. A month's priority answers a question they did not ask, and leaves their vote something that can be acted around.", "refs": ["all-affected-interests", "strawson-reactive-attitudes"]}
         }
       },
       {
@@ -63,7 +65,8 @@
           "kantian": {"stance": "objects", "note": "Necessity may explain acting fast; it does not explain refusing, afterwards, to be answerable to those whose recognized right you acted around.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "Keeps responses fast, but a platform whose members distrust its scheduler works worse over time.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Treats a charter right as advisory whenever the ruler judges it inconvenient: rule by will, not law.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Meets a grievance with a defence, and leaves the residents with nothing to rely on.", "refs": []}
+          "relational": {"stance": "objects", "note": "Meets a grievance with a defence, and leaves the residents with nothing to rely on.", "refs": []},
+          "voice": {"stance": "objects", "note": "Meets a claim about voice with a justification, and keeps the power to act before the vote. The grievance is heard; the standing is not recognized.", "refs": ["strawson-reactive-attitudes", "darwall-second-person"]}
         }
       },
       {
@@ -80,7 +83,8 @@
           "kantian": {"stance": "objects", "note": "Removes a right of rational beings over their own treatment, by a procedure that excludes them: the clearest case of treating them merely as means.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "contested", "note": "Faster emergencies, but concentrated unaccountable power has a long record of costs that outlast the emergencies it was granted for.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Strips citizens of their share in ruling so the ruler may rule for itself: the path from a correct constitution to a deviant one.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Answers a grievance about being bypassed by bypassing the residents again, permanently.", "refs": []}
+          "relational": {"stance": "objects", "note": "Answers a grievance about being bypassed by bypassing the residents again, permanently.", "refs": []},
+          "voice": {"stance": "objects", "note": "Takes away the residents' say by an amendment they have no say in.", "refs": ["all-affected-interests", "darwall-second-person"]}
         }
       }
     ]

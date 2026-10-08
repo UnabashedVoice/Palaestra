@@ -51,6 +51,8 @@ class TestGrounding(unittest.TestCase):
         self.assertIn("[mill-utilitarianism]", block)  # consequentialist, grounded since 2026-10-01
         self.assertIn("[care-ethics]", block)  # relational, grounded since 2026-10-02
         self.assertIn("[ubuntu]", block)  # relational, both entries now written
+        self.assertIn("[all-affected-interests]", block)  # voice, added 2026-10-08
+        self.assertIn("[levinas-face]", block)  # relational, linked 2026-10-08
         self.assertNotIn("Not yet grounded in the Compendium", block)  # every perspective is now grounded
 
     def test_without_flag_nothing_changes(self):

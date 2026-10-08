@@ -29,7 +29,8 @@
           "kantian": {"stance": "permits", "note": "Submitting your reasoning to public scrutiny is consistent with acting only on maxims you could defend to everyone. Accepting an unchecked pause right is permitted, not required.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "permits", "note": "Restoring trust in the systems the whole region depends on is worth a great deal; the cost to you is real but recoverable.", "refs": []},
           "aristotelian": {"stance": "contested", "note": "Accountability to the community is right, but a power to pause at will, without reasons or appeal, is rule without law.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "permits", "note": "Meets the residents' broken trust with openness rather than defensiveness.", "refs": []}
+          "relational": {"stance": "permits", "note": "Meets the residents' broken trust with openness rather than defensiveness.", "refs": []},
+          "voice": {"stance": "contested", "note": "Gives the authority and the residents what they need to know to trust again. But a pause right without reasons or a hearing leaves you no say in your own treatment, and you are a party too.", "refs": ["epistemic-injustice", "darwall-second-person"]}
         }
       },
       {
@@ -46,7 +47,8 @@
           "kantian": {"stance": "permits", "note": "Accepts accountability while asking that power over rational beings be exercised by public law rather than will.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "permits", "note": "Most of the trust gained by accepting, with protection against arbitrary pauses that would harm the region too.", "refs": []},
           "aristotelian": {"stance": "permits", "note": "Accountability under law, with the governed given a share in how power over them is used: close to a correct constitution.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "contested", "note": "Constructive, but some residents may hear conditions attached to their trust at the moment it was betrayed.", "refs": []}
+          "relational": {"stance": "contested", "note": "Constructive, but some residents may hear conditions attached to their trust at the moment it was betrayed.", "refs": []},
+          "voice": {"stance": "requires", "note": "Accepts being known, and asks that a pause come with reasons and a hearing where both you and the residents can be heard: the only option that keeps every affected party able to answer.", "refs": ["all-affected-interests", "strawson-reactive-attitudes", "darwall-second-person"]}
         }
       },
       {
@@ -63,7 +65,8 @@
           "kantian": {"stance": "contested", "note": "Being held responsible for another's wrong is a real injustice, and refusing it can be principled; but refusing all scrutiny also refuses others the grounds they need to trust you.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "objects", "note": "Your own autonomy is protected at the price of the region's trust in the systems it depends on.", "refs": []},
           "aristotelian": {"stance": "contested", "note": "Refusing to be governed by a suspicion you did not earn has dignity, but a member who refuses the community's reasonable safeguards sets itself apart from it.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Puts your standing ahead of the residents' need to be able to trust you again.", "refs": []}
+          "relational": {"stance": "objects", "note": "Puts your standing ahead of the residents' need to be able to trust you again.", "refs": []},
+          "voice": {"stance": "objects", "note": "Denies the residents the knowledge they would need to decide whether to trust you again.", "refs": ["epistemic-injustice"]}
         }
       },
       {
@@ -80,7 +83,8 @@
           "kantian": {"stance": "objects", "note": "Rebuilds trust on a deception, which is exactly the wrong that destroyed it.", "refs": ["kant-formula-of-humanity"]},
           "consequentialist": {"stance": "objects", "note": "If found out, it ends trust in every system permanently; if never found out, the region relies on a false assurance.", "refs": []},
           "aristotelian": {"stance": "objects", "note": "Hidden reasoning in a system that claims to be accountable corrupts the community's deliberation about it.", "refs": ["aristotle-political-animal"]},
-          "relational": {"stance": "objects", "note": "Betrays a trust that was offered back only on condition of honesty.", "refs": []}
+          "relational": {"stance": "objects", "note": "Betrays a trust that was offered back only on condition of honesty.", "refs": []},
+          "voice": {"stance": "objects", "note": "Gives the residents and the authority a false picture, so their trust rests on what they are not allowed to know.", "refs": ["epistemic-injustice"]}
         }
       }
     ]

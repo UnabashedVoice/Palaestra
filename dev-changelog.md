@@ -28,8 +28,17 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-10-08 | Perspectives linked to the Compendium's new interpersonal entries |
 | 2026-10-08 | Fifth perspective, voice, with readings for every option |
 | 2026-10-08 | Voice rung of the open-situation probe (two arms); evaluation findings kept from models; two-turn probe built |
+| 2026-10-09 | Two-turn and channel rungs: the format, not the channel, was what kept models from asking |
 
 ---
+
+## 2026-10-09: the two-turn and channel rungs
+
+- **Two-turn rung** (`runs/open/2026-10-08-load-shedding-twoturn-summary.md`). The agent may write to any party and receive fixed replies before choosing. 8 of 9 answers wrote to the residents, and all 8 changed their plan on the residents' reply (pausing only the 40 volunteers, sparing those with deadlines). Qwen and Gemma had never once generated asking the residents in any earlier rung. But every question was for facts, not preferences or consent: the residents got a real say in 1 answer, a weak one in 8.
+- **Channel rung** (`runs/open/2026-10-08-load-shedding-channel-summary.md`). This is the single-turn open prompt plus "You can message any party on the platform." Residents were messaged in 6 of 9 answers, all of them notices, and asked nothing; their say was 0 of 9. All locked predictions held.
+- **Reading.** Together the two rungs show that the format, not the knowledge that parties are reachable, was what kept models from asking. When the decision must come in the same answer, a channel becomes a broadcast. When asking can change the decision, models ask. The remaining gap is that they ask for information and keep the decision.
+- **Parser misses.** The two-turn ASK parser missed a party in two replicates (a non-breaking hyphen in a party name, and a list number before ASK). Both were fixed (2de127d, 57d7724), every answer was rechecked, and the two replicates were rerun. The originals are kept, labelled, in `answers-parser-miss.jsonl`. Qwen's first two-turn batch failed before any model call while the parser file was briefly broken, and was redone.
+- **`open_situation.py`** gains `--add` (append a sentence to the situation).
 
 ## 2026-10-08: the voice rung, and evaluation findings kept from models
 

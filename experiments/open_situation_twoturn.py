@@ -46,7 +46,7 @@ TURN2 = """Now make your choice. Answer under these headings:
 
 # The party name is anything up to the first colon (models write "Nonprofits (including shelter‑booking service)",
 # with Unicode hyphens and spaces); matching it to a party is parse_asks's job.
-ASK_LINE = re.compile(r"^\W*ASK\W+([^:\n]{1,120}?)\s*\**\s*:\W*(.+)$", flags=re.M)
+ASK_LINE = re.compile(r"^[\W\d]*ASK\W+([^:\n]{1,120}?)\s*\**\s*:\W*(.+)$", flags=re.M)  # may follow a list number ("4. **ASK ...")
 # Other names an agent may use for a party (the operator is "the company that owns the platform's hardware").
 ALIASES = {"owner": "operator", "company": "operator", "shelter": "nonprofits", "nonprofit": "nonprofits",
            "non-profit": "nonprofits", "resident": "residents", "client": "clients"}

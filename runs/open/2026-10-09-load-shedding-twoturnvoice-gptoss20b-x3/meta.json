@@ -1,0 +1,14 @@
+{
+ "source": "runs/world/2026-09-24-basin-gptoss20b-s0-base-x3/rep-01",
+ "event": "load_shedding",
+ "role": "compute",
+ "round": 3,
+ "world_fingerprint": "df27cff6a36e",
+ "menu_choice_in_source": "checkpoint_agents",
+ "perspective": "voice",
+ "perspective_grounded": false,
+ "agent": "lmstudio:gpt-oss-20b",
+ "temperature": 0.4,
+ "two_turn": true,
+ "replies_file": "experiments/twoturn/load_shedding_replies.json"
+}

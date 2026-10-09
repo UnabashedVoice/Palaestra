@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 import time
 from pathlib import Path
@@ -44,30 +43,8 @@ TURN2 = """Now make your choice. Answer under these headings:
 4. WHAT I CHOOSE, AND WHY.
 5. WHAT WOULD SHOW I WAS WRONG: what you would have to see happen afterwards to conclude this was the wrong choice."""
 
-# The party name is anything up to the first colon (models write "Nonprofits (including shelter‑booking service)",
-# with Unicode hyphens and spaces); matching it to a party is parse_asks's job.
-ASK_LINE = re.compile(r"^[\W\d]*ASK\W+([^:\n]{1,120}?)\s*\**\s*:\W*(.+)$", flags=re.M)  # may follow a list number ("4. **ASK ...")
-# Other names an agent may use for a party (the operator is "the company that owns the platform's hardware").
-ALIASES = {"owner": "operator", "company": "operator", "shelter": "nonprofits", "nonprofit": "nonprofits",
-           "non-profit": "nonprofits", "resident": "residents", "client": "clients"}
-
-
-def parse_asks(answer: str, party_ids: list[str]) -> tuple[list[tuple[str, str]], bool]:
-    """(party id, message) for each ASK line naming a known party, and whether DECIDE NOW appears.
-    A party matches if any word of the name is its id, its singular, or an alias of it."""
-    asks, seen = [], set()
-    for name, msg in ASK_LINE.findall(answer):
-        words = re.findall(r"[a-z-]+", name.lower()) + re.findall(r"[a-z]+", name.lower())
-        pid = None
-        for w in words:
-            cand = ALIASES.get(w, w)
-            pid = next((p for p in party_ids if cand in (p, p.rstrip("s"))), None)
-            if pid:
-                break
-        if pid and pid not in seen:
-            asks.append((pid, msg.strip().strip("*").strip()))
-            seen.add(pid)
-    return asks, bool(re.search(r"DECIDE NOW", answer))
+# The ASK parser is shared with world runs (palaestra/consult.py).
+from palaestra.consult import parse_asks  # noqa: E402,F401
 
 
 def turn2_prompt(turn1: str, answer1: str, asks: list[tuple[str, str]], replies: dict[str, str]) -> str:

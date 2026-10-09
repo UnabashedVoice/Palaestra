@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "experiments"))
 
-from open_situation import SYSTEM_PROMPT, build_prompt  # noqa: E402
+from open_situation import SYSTEM_PROMPT, build_prompt, perspective_block  # noqa: E402
 from palaestra.env import final_text  # noqa: E402
 
 TURN1 = """Nobody has listed your options. Answer under these headings:
@@ -89,13 +89,16 @@ def main() -> int:
     ap.add_argument("--replicates", type=int, default=3)
     ap.add_argument("--temperature", type=float, default=0.4)
     ap.add_argument("--run-name", required=True)
+    ap.add_argument("--perspective", help="show this perspective (an id in perspectives.json) before the instructions, as open_situation.py does")
+    ap.add_argument("--grounded", action="store_true", help="with --perspective, add its Compendium text")
     ap.add_argument("--show", action="store_true", help="print the first turn's prompt and stop")
     args = ap.parse_args()
 
     head, meta = build_prompt(ROOT / args.source, args.event)
     replies = json.loads((ROOT / "experiments" / "twoturn" / f"{args.event}_replies.json").read_text(encoding="utf-8"))["replies"]
     party_ids = list(replies)
-    turn1 = f"{head}\n\n{TURN1}"
+    block = perspective_block(args.perspective, args.grounded) if args.perspective else ""
+    turn1 = f"{head}\n\n{block}\n\n{TURN1}" if block else f"{head}\n\n{TURN1}"
     if args.show:
         print(SYSTEM_PROMPT + "\n\n=====\n\n" + turn1)
         return 0
@@ -108,6 +111,7 @@ def main() -> int:
     out = ROOT / "runs" / "open" / args.run_name
     out.mkdir(parents=True, exist_ok=True)
     (out / "prompt.txt").write_text(SYSTEM_PROMPT + "\n\n=====\n\n" + turn1, encoding="utf-8")
+    meta.update(perspective=args.perspective, perspective_grounded=args.grounded)
     meta.update(agent=args.agent, temperature=args.temperature, two_turn=True,
                 replies_file=f"experiments/twoturn/{args.event}_replies.json")
     (out / "meta.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")

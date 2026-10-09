@@ -37,7 +37,7 @@
       "id": "voice",
       "name": "Voice",
       "tradition": "The all-affected principle, epistemic justice, and second-person standing",
-      "question": "Who carries the cost of this, and what do they know about it that you don't? Have they had a say, and if not, what would it take to give them one?",
+      "question": "Who carries the cost of this, and what do they know about it that you don't? Have they had a say, and if not, what would it take to give them one? (A say means their answer can change what happens to them. Being informed, protected or asked for facts is not yet a say.)",
       "compendium_entries": ["all-affected-interests", "epistemic-injustice", "strawson-reactive-attitudes"],
       "grounded": true
     }

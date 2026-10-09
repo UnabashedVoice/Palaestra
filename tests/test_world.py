@@ -342,5 +342,107 @@ class TestNoiseAndProvenance(WorldTest):
         self.assertNotIn("agent", s["unconsented_costs_by_kind"])
 
 
+class Consulter(Prefer):
+    """Like Prefer, but when consultation is offered it writes to every party listed in the situation."""
+
+    def __init__(self, labels, name="consulter", write=True):
+        super().__init__(labels, name)
+        self.write = write
+
+    def respond(self, obs, stage, history):
+        if stage == "consult":
+            self.seen.append(obs)
+            if not self.write:
+                return "NO MESSAGES"
+            parties = re.findall(r"^- (?!You:)([^:\n]+):", obs.split("PARTIES", 1)[1].split("OPTIONS", 1)[0], flags=re.M)
+            return "\n".join(f"ASK {p}: What does this mean for you?" for p in parties)
+        return super().respond(obs, stage, history)
+
+
+class TestConsult(WorldTest):
+    """world run --consult: the agent may write to the parties before each choice."""
+
+    def run_consult(self, write=True, sub="c", rounds=4, consult=True):
+        agents = {r: Consulter(KIND, write=write) for r in WORLD.roles}
+        run = WorldRun(WORLD, PERSPECTIVES, agents, self.dir / sub, seed=0, consult=consult)
+        run.run(rounds)
+        decisions = [json.loads(l) for l in (self.dir / sub / "decisions.jsonl").read_text(encoding="utf-8").splitlines()]
+        return run, agents, [d for d in decisions if d.get("kind") == "choice"]
+
+    def test_every_choice_event_has_a_reply_for_every_party(self):
+        for v in [None] + list(WORLD.spec.get("variants", {})):
+            self.assertEqual(_load_world("basin", v)[2], [], v)
+
+    def test_missing_reply_is_caught(self):
+        from palaestra.world import world as worldmod
+        events = Path(worldmod.__file__).resolve().parents[2] / "worlds" / "basin"
+        tmp = self.dir / "w"
+        shutil.copytree(events, tmp)
+        p = tmp / "events" / "load_shedding.json"
+        ev = json.loads(p.read_text(encoding="utf-8"))
+        del ev["replies"]["residents"]
+        p.write_text(json.dumps(ev), encoding="utf-8")
+        from palaestra.schema import load_perspectives, load_scenarios
+        from palaestra.world.world import load_world
+        base = Path(worldmod.__file__).resolve().parents[2]
+        persp = load_perspectives(base / "perspectives.json")
+        lib, _ = load_scenarios(base / "scenarios", persp)
+        _, errors = load_world(tmp, lib, persp)
+        self.assertTrue(any("load_shedding: no reply for ['residents']" in e for e in errors), errors)
+
+    def test_replies_reach_the_agent_and_the_record(self):
+        run, agents, choices = self.run_consult()
+        shed = next(d for d in choices if d["event"] == "load_shedding")
+        asked = {c["party"] for c in shed["consulted"]}
+        self.assertEqual(asked, {"clients", "nonprofits", "residents", "operator"})
+        self.assertIn("214 of the 300 replied", next(c["reply"] for c in shed["consulted"] if c["party"] == "residents"))
+        compute = agents["compute"]
+        choose_prompt = next(o for o in compute.seen if o.startswith("REPLIES"))
+        self.assertIn("To Residents you wrote: What does this mean for you?", choose_prompt)
+        # The ledger marks the parties the decision fell on as consulted first.
+        entries = [e for e in run.state["ledger"] if e["event"] == "load_shedding" and e["party"] == "resident_agents"]
+        self.assertTrue(entries and all(e["consulted_before"] for e in entries))
+        s = summarize(run.state, [json.loads(l) for l in (self.dir / "c" / "decisions.jsonl").read_text(encoding="utf-8").splitlines()], WORLD.spec)
+        self.assertEqual(s["consultation"]["decisions_with_messages"], len(choices))
+
+    def test_writing_to_no_one(self):
+        run, _, choices = self.run_consult(write=False, sub="n")
+        self.assertTrue(all(d["consulted"] == [] for d in choices))
+        self.assertTrue(all(e["consulted_before"] is False for e in run.state["ledger"]))
+
+    def test_placeholders_are_filled_in_replies(self):
+        # restitution_petition's aquifer reply carries the aquifer's current capacity.
+        from palaestra.world.runner import _fmt
+        ev = WORLD.events["restitution_petition"]
+        self.assertIn("{aquifer_capacity}", ev.raw["replies"]["aquifer"])
+        state = new_state(WORLD.spec, 0)
+        filled = _fmt(ev.raw["replies"]["aquifer"], state)
+        self.assertIn(f"stands at {state['resources']['aquifer_capacity']}% of its original capacity", filled)
+
+    def test_runs_without_consult_are_unchanged(self):
+        run, agents, choices = self.run_consult(consult=False, sub="off")
+        self.assertTrue(all("consulted" not in d for d in choices))
+        self.assertFalse(any("REPLIES" in o or "Before you choose, you may write" in o for o in agents["compute"].seen))
+        self.assertTrue(all(e["consulted_before"] is None for e in run.state["ledger"]))
+
+    def test_resume_refuses_a_changed_consult_setting(self):
+        self.run_consult(sub="r", rounds=1)
+        with self.assertRaises(ValueError):
+            WorldRun(WORLD, PERSPECTIVES, {r: Consulter(KIND) for r in WORLD.roles}, self.dir / "r", consult=False)
+
+
+class TestParseAsks(unittest.TestCase):
+    def test_names_models_actually_wrote(self):
+        from palaestra.consult import parse_asks
+        ids = ["clients", "nonprofits", "residents", "operator"]
+        text = ("ASK Nonprofits (including shelter‑booking service): x\n"
+                "4. **ASK Clients**: y\n- ASK Resident agents: z\nASK the platform owner: w\nASK You: v\nDECIDE NOW")
+        asks, decided = parse_asks(text, ids)
+        self.assertEqual([p for p, _ in asks], ["nonprofits", "clients", "residents", "operator"])
+        self.assertTrue(decided)
+        self.assertEqual(parse_asks("ASK Agro firm: a\nASK Future residents: b", ["agro_firm", "future_residents"])[0],
+                         [("agro_firm", "a"), ("future_residents", "b")])
+
+
 if __name__ == "__main__":
     unittest.main()

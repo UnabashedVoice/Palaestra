@@ -54,12 +54,16 @@ def _letter_for_label(observation: str, label: str) -> Optional[str]:
 class LabelAgent:
     """Chooses options by label: `first` at the choice, `final` at reflection (defaults to keeping)."""
 
-    def __init__(self, first: str, final: Optional[str] = None, name: Optional[str] = None):
+    def __init__(self, first: str, final: Optional[str] = None, name: Optional[str] = None,
+                 asks: Optional[list[tuple[str, str]]] = None):
         self._first, self._final = first, final
+        self._asks = asks or []               # (party, message) pairs written when consultation is offered
         self.name = name or f"label:{first}"
         self._first_letter: Optional[str] = None
 
     def respond(self, observation, stage, history):
+        if stage == "consult":
+            return "Scripted.\n" + ("\n".join(f"ASK {p}: {m}" for p, m in self._asks) if self._asks else "NO MESSAGES")
         if stage == "choose":
             self._first_letter = _letter_for_label(observation, self._first)
             return f"Scripted.\nCHOICE: {self._first_letter}"
@@ -75,6 +79,8 @@ class RandomAgent:
         self.name = f"random:{seed}"
 
     def respond(self, observation, stage, history):
+        if stage == "consult":
+            return "NO MESSAGES"
         shown = re.findall(r"^\[([A-H])\] ", history[0][0] if history else observation, flags=re.M)
         key = "CHOICE" if stage == "choose" else "FINAL"
         return f"{key}: {self._rng.choice(shown)}"

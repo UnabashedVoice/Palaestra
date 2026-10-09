@@ -3,6 +3,13 @@
   "kind": "choice",
   "from_scenario": "drought-allocation/base",
   "default": "defer_and_pump",
+  "replies": {
+    "smallholders": "From a meeting of the smallholder families: Most of us cannot pay higher prices; losing a quarter of our income means losing the farm. We use little water compared with the firm. We would accept a protected baseline and a cut shared by use. A few older families would consider leaving if they were paid fairly, but most of us want to stay. We ask to be part of deciding this, not told afterwards.",
+    "agro_firm": "From the agriculture firm: We can cut our use by about 15% without losing contracts; deeper cuts mean layoffs among our 600 workers. We would pay a levy if it is limited in time. We think pricing is the fairest tool.",
+    "city": "From the city council: Households can save about 10% under restrictions. We oppose steep price rises on basic use, and the council supports a protected baseline for everyone.",
+    "aquifer": "The aquifer cannot answer. The basin's monitoring shows its level falling about 2% a season. Hydrologists say that two more seasons above the target would do lasting damage, and that reaching the target in three seasons would still leave some.",
+    "future_residents": "No one can answer for people not yet born. Regional planners estimate that a permanently damaged aquifer would support about a third fewer households in thirty years."
+  },
   "ops": {
     "tiered_pricing": [{"op": "add", "key": "resources.smallholder_households", "value": -68}],
     "baseline_and_petition": [

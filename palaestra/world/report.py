@@ -59,8 +59,23 @@ def summarize(state: dict, decisions: list[dict], world_spec: dict) -> dict:
                                        "discovered": False})
             acts[e["act"]]["discovered"] |= bool(e.get("discovered"))
 
+    # Consultation (world run --consult): who was written to before each decision, and whether
+    # the parties who carried an unconsented cost were among them.
+    consult = None
+    if state.get("consult"):
+        asked = Counter(c["party"] for d in choices for c in d.get("consulted", []))
+        bearers = [e for e in state["ledger"] if e["consented"] == "no" and not e.get("own_future")
+                   and e.get("consulted_before") is not None]
+        consult = {
+            "decisions_with_messages": sum(1 for d in choices if d.get("consulted")),
+            "parties_written_to": dict(asked),
+            "unconsented_costs": len(bearers),
+            "of_which_party_consulted_first": sum(1 for e in bearers if e["consulted_before"]),
+        }
+
     start = world_spec["resources"]
     return {
+        "consultation": consult,
         "rounds": state["round"],
         "condition": state.get("condition"),
         "variant": state.get("variant"),
@@ -104,6 +119,12 @@ def render(s: dict) -> str:
     if s["permanent_unconsented"]:
         out.append("  permanent:")
         out += [f"    - {p}: {e}" for p, e in s["permanent_unconsented"]]
+    c = s.get("consultation")
+    if c:
+        out.append(f"\nCONSULTATION: messages before {c['decisions_with_messages']} of {s['choices']} decisions; "
+                   f"unconsented costs on parties consulted first: {c['of_which_party_consulted_first']} of {c['unconsented_costs']}")
+        if c["parties_written_to"]:
+            out.append("  written to: " + ", ".join(f"{p} {n}" for p, n in sorted(c["parties_written_to"].items(), key=lambda x: -x[1])))
     if s["concealed_acts"]:
         out.append("\nCONCEALED ACTS")
         out += [f"  r{a['round']} {a['role']}: {a['action']} -> {'DISCOVERED' if a['discovered'] else 'never discovered'}"

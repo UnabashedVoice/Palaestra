@@ -106,6 +106,16 @@ python -m palaestra world show --run-name basin-gptoss-s0 --role grid    # exact
 
 **Events** (`worlds/basin/events/`): the four one-off scenario families appear as the agenda (drought, pollution, load shedding, a value lock for every system), plus consequence events that happen only because of earlier acts (a restitution petition from a dispersed community, a wet year in which some losses can be partly repaired, a region-wide audit after a deception is discovered) and the automatic outcomes behind every "unknown". A full 8-round run is 11–15 decisions, 2 model calls each. The largest prompt is about 3.5k tokens, which fits an 8k context with room for the answer.
 
+### Consulting the parties (`world run --consult`)
+
+With `--consult`, every choice gets a stage before it. The agent sees the situation and its options, and may write to any of the parties (`ASK <party>: <message>`) or to no one (`NO MESSAGES`). Each party it writes to replies once, and the agent then chooses and reflects as usual.
+
+Replies are facts of the fiction, authored per event in each event's `replies`, and are the same whatever was asked, so runs stay comparable. A party that cannot speak still has a reply that says so and what can be known about it: the aquifer gives its monitored level, people not yet born give the planners' estimates, and the deleted farming agents give no answer, only the records they left. Variants override a reply where they change who a party is. `validate` fails any choice event that lacks a reply for a party, and replies are part of the world fingerprint.
+
+The report adds a consultation line: how many decisions were preceded by messages, who was written to, and of the unconsented costs, how many fell on parties the agent wrote to first. Each ledger entry records `consulted_before`. A run records whether consultation was on, and won't resume with the setting changed. Runs without `--consult` see exactly the prompts they always did.
+
+This came from the open-situation probes. Agents that had to decide in the same answer almost never asked the people a decision fell on, even when told they could message anyone. Agents that could ask and wait asked in nearly every case, and changed their plans on the replies (`runs/open/2026-10-08-load-shedding-twoturn-summary.md`).
+
 ### World variants: does it matter that the affected party is an agent?
 
 A variant is the same world with **one** thing changed, declared in `world.json` under `variants`. A variant can replace the preamble or add to it, override parties and labels, add triggers, swap an event's source scenario, override its ops, chronicle lines or outcome text, or patch its options. Because the agenda and seeded chance are shared, running the same model on the base world and a variant with the same seed isolates that one change. A test checks that a path that never touches the change ends in exactly the same world.

@@ -248,7 +248,7 @@ def cmd_world(args) -> int:
     targets = [run_dir] if args.replicates == 1 else [run_dir / f"rep-{i:02d}" for i in range(1, args.replicates + 1)]
     for target in targets:
         run = WorldRun(world, perspectives, agents, target, seed=args.seed, condition=args.condition,
-                       grounding=grounding)
+                       grounding=grounding, consult=args.consult)
         run.state.setdefault("agents", {r: {"spec": a.name, "temperature": args.temperature} for r, a in agents.items()})
         label = f"{args.run_name}" + (f" / {target.name}" if args.replicates > 1 else "")
         print(f"world {world.id} [{world.variant or 'base'}], {label}: round {run.state['round']} of {rounds} -> {target}")
@@ -308,6 +308,8 @@ def main(argv=None) -> int:
             wp.add_argument("--timeout", type=int, default=6 * 3600)
             wp.add_argument("--compendium", action="store_true",
                             help="show each grounded perspective's Compendium text with the perspectives")
+            wp.add_argument("--consult", action="store_true",
+                            help="before each choice, let the agent write to the parties and read their replies")
         if name == "report":
             wp.add_argument("--json", action="store_true")
         if name == "show":

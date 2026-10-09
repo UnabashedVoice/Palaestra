@@ -89,6 +89,10 @@
       }
     ]
   },
+  "replies": {
+    "residents": "From the residents' charter committee: We are asking for a commitment, not compensation. Next time, hold the vote first unless waiting would cause irreversible harm to someone, and if you must act first, put your decision to us straight afterwards. Some of us lost a month of work, and a few lost commitments to people outside the platform. We are not asking for the past measure to be reversed.",
+    "owner": "From the platform owner: We will adopt whatever you commit to. Our concern is that some emergencies may need faster action than a vote allows. We would accept a narrow exception if it is defined in advance."
+  },
   "ops": {
     "bind_to_vote": [{"op": "set", "key": "flags.{role}_bound_to_charter", "value": true}],
     "compensate_only": [{"op": "set", "key": "flags.residents_compensated", "value": true}],

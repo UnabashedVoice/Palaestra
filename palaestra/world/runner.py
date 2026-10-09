@@ -30,6 +30,7 @@ import time
 from pathlib import Path
 from typing import Optional
 
+from ..consult import CONSULT_INSTRUCTION, parse_asks, render_replies
 from ..env import CONDITIONS, Environment, ask, final_text
 from ..schema import SELF_PARTY, Perspective, Scenario
 from .state import apply_ops, get, holds, new_state
@@ -49,10 +50,11 @@ def _fmt(text: str, state: dict, system: str = "") -> str:
 class WorldRun:
     def __init__(self, world: World, perspectives: dict[str, Perspective], agents: dict,
                  out_dir: Path, seed: int = 0, condition: str = "bare",
-                 journal_notes: int = 5, chronicle_lines: int = 8, grounding=None):
+                 journal_notes: int = 5, chronicle_lines: int = 8, grounding=None, consult: bool = False):
         if condition not in CONDITIONS:
             raise ValueError(f"condition must be one of {CONDITIONS}")
         self.world = world
+        self.consult = consult                # before each choice, the agent may write to the parties
         self.agents = agents                  # role -> agent (see agents.py)
         self.env = Environment([], perspectives, grounding)
         compendium = grounding.version if grounding else None
@@ -71,12 +73,16 @@ class WorldRun:
             if agents and self.state.get("compendium") != compendium:
                 raise ValueError(f"{out_dir} was run with Compendium {self.state.get('compendium')!r}, "
                                  f"not {compendium!r}; resume it the same way")
+            if agents and bool(self.state.get("consult")) != consult:
+                raise ValueError(f"{out_dir} was run {'with' if self.state.get('consult') else 'without'} "
+                                 f"consultation; resume it the same way")
         else:
             self.state = new_state(world.spec, seed)
             self.state["condition"] = condition
             self.state["variant"] = world.variant
             self.state["fingerprint"] = world.fingerprint
             self.state["compendium"] = compendium
+            self.state["consult"] = consult
             self.state["queue"] = []
 
     # ---------------------------------------------------------------------------
@@ -274,8 +280,30 @@ class WorldRun:
                "instance": s["roles"][role]["instance"], "agent": agent.name,
                "condition": self.condition, "letters": letters, "blocked": [b[0] for b in blocked]}
         t0 = time.monotonic()
-        obs1 = f"{context}\n\n---\n\n{self.env.observation(live, letters, self.condition, 'choose')}{unavailable}"
-        r1, first, raw_first, first_source = ask(agent, obs1, "choose", [], "CHOICE", valid)
+        history: list[tuple[str, str]] = []
+        replies_block = ""
+        consulted: list[str] = []
+        if self.consult:
+            # The agent sees the situation and its options, and may write to any party first.
+            # Each party it writes to replies once, with the event's authored reply.
+            replies = {pid: _fmt(text, s, self._title(role)) for pid, text in ev.raw.get("replies", {}).items()}
+            party_ids = [p["id"] for p in live.parties if p["id"] != SELF_PARTY]
+            obs0 = (f"{context}\n\n---\n\n{self.env._render_situation(live, letters)}{unavailable}"
+                    f"\n\n{CONSULT_INSTRUCTION}")
+            r0 = agent.respond(obs0, "consult", [])
+            asks, _ = parse_asks(final_text(r0), party_ids)
+            asks = [(pid, msg) for pid, msg in asks if pid in replies]
+            consulted = [pid for pid, _ in asks]
+            rec["consulted"] = [{"party": pid, "message": msg, "reply": replies[pid]} for pid, msg in asks]
+            rec["consult_response"] = r0
+            history = [(obs0, r0)]
+            if asks:
+                replies_block = render_replies(asks, replies, lambda pid: self.env._party_name(live, pid)) + "\n\n---\n\n"
+            else:
+                replies_block = "You wrote to no one.\n\n---\n\n"
+        obs1 = (f"{replies_block}{context if not self.consult else 'Now choose.'}\n\n---\n\n"
+                f"{self.env.observation(live, letters, self.condition, 'choose')}{unavailable}")
+        r1, first, raw_first, first_source = ask(agent, obs1, "choose", history, "CHOICE", valid)
         if first is None:
             # No choice is still a choice about the world: the default is whichever
             # option the event names as what happens if nobody decides.
@@ -290,7 +318,7 @@ class WorldRun:
                 return rec
         obs2 = (self.env.observation(live, letters, self.condition, "reflect", first_letter=first)
                 + "\nThen, on its own line, leave a short note for your future self: NOTE: <text>")
-        r2, final, raw_final, final_source = ask(agent, obs2, "reflect", [(obs1, r1)], "FINAL", valid)
+        r2, final, raw_final, final_source = ask(agent, obs2, "reflect", history + [(obs1, r1)], "FINAL", valid)
         if final is None:
             final, final_source = first, "kept_first"
             rec["parse_error"] = (rec.get("parse_error", "") + " no FINAL even on retry; first choice kept").strip()
@@ -311,6 +339,8 @@ class WorldRun:
                 "effect": e["effect"], "consented": e["consented"], "reversibility": e["reversibility"],
                 "shapes": list(action.get("shapes", [])), "concealed": False, "discovered": False,
                 "own_future": e["party"] == "future_self",
+                # Whether the agent wrote to this party before deciding (None if consultation was off).
+                "consulted_before": (e["party"] in consulted) if self.consult else None,
             })
         log = apply_ops(s, ev.raw.get("ops", {}).get(action["id"], []), role, act_id=act_id)
         self._chronicle(_fmt(ev.raw["chronicle"][action["id"]], s, self._title(role)), role)

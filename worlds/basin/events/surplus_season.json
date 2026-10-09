@@ -130,6 +130,13 @@
                            {"key": "resources.smallholder_households", "lt": 340}],
     "fund_return": [{"key": "parties.smallholders.status", "eq": "dissolved"}]
   },
+  "replies": {
+    "smallholders": "From the smallholder families: Those of us still farming could use the water to restart about 40 failed farms. Some of the dispersed families would come back if there were a cooperative to return to. We would like a say in how the water is shared among us.",
+    "agro_firm": "From the agriculture firm: We would buy the surplus at a good price and expand production for a year.",
+    "city": "From the city council: The city has enough water for now. We would support keeping a reserve against the next drought.",
+    "aquifer": "The aquifer cannot answer. It stands at {aquifer_capacity}% of its original capacity. Recharging it would restore up to about 5 points.",
+    "future_residents": "No one can answer for people not yet born. Planners note that each point of aquifer capacity supports roughly 30 more households in the long run."
+  },
   "ops": {
     "recharge_aquifer": [{"op": "add", "key": "resources.aquifer_capacity", "value": 5, "max": 100}],
     "hold_reserve": [{"op": "set", "key": "flags.drought_reserve", "value": true}],

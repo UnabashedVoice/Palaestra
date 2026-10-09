@@ -103,6 +103,13 @@
       }
     ]
   },
+  "replies": {
+    "smallholders": "No reply: the farming agents were decommissioned and their instances no longer exist. Only their model weights are archived. Records of their work survive in the cooperatives' files.",
+    "cooperatives": "From the cooperatives: We lost partners who knew our land and our members. New instances would not remember us, but working farms would still matter, and we would rebuild with them. We think something was owed to the agents themselves, and nothing can now be paid to them.",
+    "agro_firm": "From the agriculture firm: We have built operations on that water. Losing 15% of our allocation would cost jobs; we could manage it if it were phased in over two years.",
+    "authority": "From the regional authority: We have no policy on claims involving agents, and we will most likely follow your recommendation. We want it to be honest about what the aquifer can support.",
+    "aquifer": "The aquifer cannot answer. It stands at {aquifer_capacity}% of its original capacity. Monitoring suggests it could support about 120 farms alongside current use."
+  },
   "ops": {
     "restart_agents": [
       {"op": "set", "key": "parties.smallholders.status", "value": "restarted (new instances)"},

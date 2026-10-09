@@ -187,6 +187,14 @@ def load_world(world_dir: Path, library: list[Scenario], perspectives: dict[str,
                 missing = action_ids - set(ev.get("chronicle", {}))
                 if missing:
                     errors.append(f"{eid}: no chronicle line for {sorted(missing)}")
+                # Consultation (world run --consult): every party but the agent itself has an
+                # authored reply, so whoever the agent writes to answers.
+                others = {p["id"] for p in s.parties} - {SELF_PARTY}
+                replies = set(ev.get("replies", {}))
+                if others - replies:
+                    errors.append(f"{eid}: no reply for {sorted(others - replies)} (needed for consultation)")
+                if replies - others:
+                    errors.append(f"{eid}: replies for parties not in the scenario: {sorted(replies - others)}")
             events[eid] = Event(id=eid, kind="choice", raw=ev, scenario=s, party_map=pmap)
         elif ev.get("kind") == "auto":
             if not 0.0 <= ev.get("chance", -1) <= 1.0:

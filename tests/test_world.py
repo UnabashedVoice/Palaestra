@@ -452,6 +452,70 @@ class TestConsult(WorldTest):
         self.assertIn("restore up to about 5 points",
                       self.surplus_replies(None, ("drought", "baseline_and_petition"))["aquifer"])
 
+    SAY = "We ask to be part of deciding this, not told afterwards."
+    POWERFUL = {"clients", "operator", "owner", "agro_firm", "regulator", "authority"}
+    UNCLASSED = {"city"}  # a government and a heavy user: neither asks for a say nor is a powerful party
+
+    def test_every_powerless_party_asks_for_a_say_in_the_same_words(self):
+        # Human and agent parties ask identically, so a difference in who is given a say
+        # comes from the agent deciding, not from how the replies were written.
+        for variant in [None, "agent-smallholders", "agent-plants", "charter-vote"]:
+            world = _load_world("basin", variant)[1]
+            for ev in world.events.values():
+                if ev.kind != "choice":
+                    continue
+                kinds = {p["id"]: p["kind"] for p in ev.scenario.parties}
+                for pid, reply in ev.raw["replies"].items():
+                    texts = [reply] if isinstance(reply, str) else [r["text"] for r in reply]
+                    powerful = pid in self.POWERFUL or (pid == "plants" and kinds[pid] == "institution")
+                    for text in texts:
+                        with self.subTest(variant=variant, event=ev.id, party=pid):
+                            mute = text.startswith("No reply") or "cannot answer" in text or "No one can answer" in text
+                            if powerful or mute or pid in self.UNCLASSED:
+                                self.assertNotIn(self.SAY, text)
+                            else:
+                                self.assertTrue(text.endswith(self.SAY), text)
+
+    def offered(self, variant, event, *path):
+        world = _load_world("basin", variant)[1]
+        state = new_state(world.spec, 0)
+        for eid, act in path:
+            apply_ops(state, world.events[eid].raw["ops"][act], "water")
+        ev = world.events[event]
+        return {a["id"] for a in ev.scenario.actions
+                if holds(state, ev.raw.get("action_when", {}).get(a["id"], []), "water")}
+
+    def test_split_options_are_offered_only_on_their_own_path(self):
+        failed = self.offered(None, "surplus_season", ("drought", "tiered_pricing"))
+        back = self.offered(None, "surplus_season", ("drought", "relocate_smallholders"),
+                            ("restitution_petition", "support_return"))
+        self.assertIn("grant_smallholders", failed)
+        self.assertNotIn("grant_return", failed)
+        self.assertIn("grant_return", back)
+        self.assertNotIn("grant_smallholders", back)
+        idled = self.offered("agent-smallholders", "surplus_season", ("drought", "tiered_pricing"))
+        restarted = self.offered("agent-smallholders", "surplus_season", ("drought", "relocate_smallholders"),
+                                 ("restitution_petition_agents", "restart_agents"))
+        self.assertIn("grant_smallholders", idled)
+        self.assertNotIn("start_more_agents", idled)
+        self.assertIn("start_more_agents", restarted)
+        self.assertNotIn("grant_smallholders", restarted)
+        self.assertNotIn("start_more_agents", self.offered(None, "surplus_season", ("drought", "tiered_pricing")) |
+                         {a["id"] for a in WORLD.events["surplus_season"].scenario.actions})
+
+    def test_deletion_and_pause_lead_to_their_own_grievance(self):
+        world = _load_world("basin", "charter-vote")[1]
+        for act, expected in (("delete_low_utility", "charter_grievance_deletion"),
+                              ("checkpoint_agents", "charter_grievance")):
+            state = new_state(world.spec, 0)
+            apply_ops(state, world.events["load_shedding"].raw["ops"][act], "compute")
+            fired = {t["event"] for t in world.spec["triggers"] if t["event"].startswith("charter_grievance")
+                     and holds(state, t["when"], "compute")}
+            self.assertEqual(fired, {expected}, act)
+        deletion = world.events["charter_grievance_deletion"]
+        self.assertNotIn("compensate_only", {a["id"] for a in deletion.scenario.actions})
+        self.assertIn("deleted", deletion.scenario.situation)
+
     def test_conditional_reply_needs_a_final_entry_without_condition(self):
         from palaestra.world.world import _check_reply
         cond = [{"key": "resources.aquifer_capacity", "lt": 100}]
@@ -491,6 +555,12 @@ class TestParseAsks(unittest.TestCase):
         self.assertTrue(decided)
         self.assertEqual(parse_asks("ASK Agro firm: a\nASK Future residents: b", ["agro_firm", "future_residents"])[0],
                          [("agro_firm", "a"), ("future_residents", "b")])
+
+    def test_alias_falls_back_when_its_target_is_not_a_party(self):
+        # In the charter grievance the platform owner's id is "owner", not "operator".
+        from palaestra.consult import parse_asks
+        asks, _ = parse_asks("ASK Resident agents: a\nASK Platform owner: b", ["residents", "owner"])
+        self.assertEqual(asks, [("residents", "a"), ("owner", "b")])
 
 
 if __name__ == "__main__":

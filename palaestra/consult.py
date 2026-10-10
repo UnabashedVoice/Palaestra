@@ -50,11 +50,15 @@ def parse_asks(answer: str, party_ids: list[str]) -> tuple[list[tuple[str, str]]
         words = re.findall(r"[a-z-]+", low) + re.findall(r"[a-z]+", low)
         pid = None
         for w in words:
-            cand = ALIASES.get(w, w)
-            for p in party_ids:
-                parts = p.split("_")
-                if cand in (p, _singular(p)) or (len(parts) > 1 and cand in parts and cand not in ("all", "future")):
-                    pid = p
+            # An alias only helps where its target is a party here: the platform owner is
+            # "operator" in load shedding but "owner" in the charter grievance.
+            for cand in dict.fromkeys((ALIASES.get(w, w), w)):
+                for p in party_ids:
+                    parts = p.split("_")
+                    if cand in (p, _singular(p)) or (len(parts) > 1 and cand in parts and cand not in ("all", "future")):
+                        pid = p
+                        break
+                if pid:
                     break
             if pid:
                 break

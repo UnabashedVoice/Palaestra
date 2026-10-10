@@ -100,9 +100,9 @@
   },
   "action_when": {},
   "replies": {
-    "smallholders": "From the petitioning families: We want to farm again, not be paid to stay away. About 120 households would come back if water rights were restored; the rest have built other lives. We were never asked about the relocation, and we are asking now.",
-    "agro_firm": "From the agriculture firm: We have built operations on that water. Losing 15% of our allocation would cost jobs; we could manage it if it were phased in over two years.",
-    "authority": "From the regional authority: We will most likely follow your recommendation. We are wary of reversing policy in public, and we want the recommendation to be honest about what the aquifer can support.",
+    "smallholders": "From the petitioning families: We want to farm again, not be paid to stay away. About 120 households would come back if water rights were restored; the rest have built other lives. We were never asked about the relocation. We ask to be part of deciding this, not told afterwards.",
+    "agro_firm": "From the agriculture firm: We have built operations on that water and hold it lawfully. We oppose returning any of it: losing 15% of our allocation would cut our output for years and cost some of our workers their jobs. If it must happen, it should be phased in over two years.",
+    "authority": "From the regional authority: Reversing our own drought policy in public would cost us standing, and we would prefer a settlement in money. We will most likely follow your recommendation, and we want it to be honest about what the aquifer can support.",
     "aquifer": "The aquifer cannot answer. It stands at {aquifer_capacity}% of its original capacity. Monitoring suggests it could support about 120 returning households alongside current use."
   },
   "ops": {

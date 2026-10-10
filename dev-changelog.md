@@ -31,6 +31,22 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-10-09 | Two-turn and channel rungs: the format, not the channel, was what kept models from asking |
 | 2026-10-09 | "Say" defined in the voice question; world runs can consult parties (--consult); two-turn voice rung |
 | 2026-10-09 | Consultation replies follow the world's state; review of the authored replies |
+| 2026-10-10 | Replies rewritten: one request for a say, real stakes for powerful parties; path-exact options; deletion-path grievance |
+
+---
+
+## 2026-10-10: replies rewritten, options made exact per path
+
+The user approved the draft `B:/HouseLLaMas/Claude/DRAFT-world-replies-fixes.md` (outside the repo), with one wording change. It answers two findings of the replies review: authored agent parties asked for less standing than human ones, and powerful parties were written as conciliatory, so asking never cost anything. The user's rule for the second: powerful parties get real, stated interests, but revenue, contracts, speed and reputation should never outweigh livelihoods, shelter and existence. The replies carry that as the size of the stakes, not as any party's concession; the weighing is left to the agent.
+
+- **One request for a say**: every powerless speaking party, human or agent, ends with "We ask to be part of deciding this, not told afterwards." The resident agents' load-shedding reply had only "a few asked to be told the plan" (notice); the farming agents had "consulted". Tests check the rule in every variant.
+- **Powerful parties' interests**: the firm opposes the levy (profit) and the restitution (output), the plant managements oppose the tariff (cost), the owner states its revenue stake and says it would not close the platform, the operator leans toward the honesty lock (sales, regulators), the authority prefers a money settlement (standing) and an unconditional pause right (speed). Workers' jobs are named as the workers'.
+- **Option mechanics removed**: the charter residents no longer describe the interim cut, and the grievance residents no longer recite the exception clause; the grievance owner now argues for standing emergency powers instead of supplying that clause.
+- **The farming agents' drought reply** gains "A few of us would accept being retired if our records went to the cooperatives", matching the human families' "a few would consider leaving".
+- **Path-exact options**: surplus season gains `grant_return` (base, when families are partly back) and `start_more_agents` (agent-smallholders, after restarted instances), and `grant_smallholders` is offered only where its text is true.
+- **Deletion-path grievance**: new event `charter_grievance_deletion`, triggered in charter-vote when residents were deleted rather than paused. Its situation, replies, effects and readings describe deletion; `compensate_only` becomes `apologize_and_record`, which says nothing reaches the deleted. The pause-path grievance now triggers only when no residents were deleted.
+- **Parser fix**: `parse_asks` mapped "owner" to "operator" even where the party's id is `owner`, so no agent could consult the owner in the charter grievance since 0772f4f. An alias now applies only when its target is a party. Probe results are unaffected: their party lists contain `operator`.
+- 74 tests.
 
 ---
 

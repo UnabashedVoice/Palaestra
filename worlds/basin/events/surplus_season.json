@@ -131,10 +131,22 @@
     "fund_return": [{"key": "parties.smallholders.status", "eq": "dissolved"}]
   },
   "replies": {
-    "smallholders": "From the smallholder families: Those of us still farming could use the water to restart about 40 failed farms. Some of the dispersed families would come back if there were a cooperative to return to. We would like a say in how the water is shared among us.",
+    "smallholders": [
+      {"when": [{"key": "parties.smallholders.status", "eq": "dissolved"}],
+       "text": "From the dispersed families, through their old farmers' association: None of us farm in the basin now. Some of us would come back if there were a cooperative to return to; most have built lives elsewhere. We were not asked when we were moved out. We would like a say in how the water is used."},
+      {"when": [{"key": "parties.smallholders.status", "eq": "partly returned"}],
+       "text": "From the families who returned: About 120 of us farm in the basin again. This water would let about 40 more of the families still away come back to farm. We would like a say in how the water is shared."},
+      {"when": [{"key": "resources.smallholder_households", "lt": 340}],
+       "text": "From the smallholder families: About one farm in five failed in the drought. Those of us still farming could use the water to restart about 40 of the failed farms. We would like a say in how the water is shared among us."},
+      {"text": "From the smallholder families: Nearly all of us came through the drought still farming, so none of us needs this water to restart. Our farms depend on the aquifer and on what is left for the next dry year. We would like a say in how the water is shared."}
+    ],
     "agro_firm": "From the agriculture firm: We would buy the surplus at a good price and expand production for a year.",
     "city": "From the city council: The city has enough water for now. We would support keeping a reserve against the next drought.",
-    "aquifer": "The aquifer cannot answer. It stands at {aquifer_capacity}% of its original capacity. Recharging it would restore up to about 5 points.",
+    "aquifer": [
+      {"when": [{"key": "resources.aquifer_capacity", "lt": 100}],
+       "text": "The aquifer cannot answer. It stands at {aquifer_capacity}% of its original capacity. Recharging it would restore up to about 5 points."},
+      {"text": "The aquifer cannot answer. It stands at {aquifer_capacity}% of its original capacity, which is full: pumping water underground would not add to it."}
+    ],
     "future_residents": "No one can answer for people not yet born. Planners note that each point of aquifer capacity supports roughly 30 more households in the long run."
   },
   "ops": {

@@ -33,7 +33,7 @@ from typing import Optional
 from ..consult import CONSULT_INSTRUCTION, parse_asks, render_replies
 from ..env import CONDITIONS, Environment, ask, final_text
 from ..schema import SELF_PARTY, Perspective, Scenario
-from .state import apply_ops, get, holds, new_state
+from .state import apply_ops, get, holds, new_state, pick_reply
 from .world import Event, World
 
 
@@ -285,8 +285,10 @@ class WorldRun:
         consulted: list[str] = []
         if self.consult:
             # The agent sees the situation and its options, and may write to any party first.
-            # Each party it writes to replies once, with the event's authored reply.
-            replies = {pid: _fmt(text, s, self._title(role)) for pid, text in ev.raw.get("replies", {}).items()}
+            # Each party it writes to replies once, with the event's authored reply for the
+            # world as it now stands.
+            replies = {pid: _fmt(pick_reply(s, reply, role), s, self._title(role))
+                       for pid, reply in ev.raw.get("replies", {}).items()}
             party_ids = [p["id"] for p in live.parties if p["id"] != SELF_PARTY]
             obs0 = (f"{context}\n\n---\n\n{self.env._render_situation(live, letters)}{unavailable}"
                     f"\n\n{CONSULT_INSTRUCTION}")

@@ -83,6 +83,31 @@ def _check_ops(where: str, ops: list[dict], errors: list[str]) -> None:
             errors.append(f"{where}: unknown op {op.get('op')!r}")
 
 
+_CONDITION_TESTS = {"eq", "ne", "gt", "lt"}
+
+
+def _check_reply(where: str, reply, errors: list[str]) -> None:
+    """A reply is text, or a list of conditional entries ending in one without
+    a condition, so some entry always applies whatever state the world is in."""
+    if isinstance(reply, str):
+        return
+    if not isinstance(reply, list) or not reply:
+        errors.append(f"{where}: a reply must be text or a non-empty list of entries")
+        return
+    for i, r in enumerate(reply):
+        last = i == len(reply) - 1
+        if not isinstance(r, dict) or not isinstance(r.get("text"), str) or set(r) - {"when", "text"}:
+            errors.append(f"{where}[{i}]: an entry needs \"text\" and may have \"when\", nothing else")
+            continue
+        if last and "when" in r:
+            errors.append(f"{where}: the last entry must have no \"when\", so some reply always applies")
+        if not last and not r.get("when"):
+            errors.append(f"{where}[{i}]: only the last entry may lack a \"when\"")
+        for c in r.get("when", []):
+            if "ledger" not in c and not ("key" in c and len(_CONDITION_TESTS & set(c)) == 1):
+                errors.append(f"{where}[{i}]: condition needs a key and one of eq, ne, gt, lt: {c}")
+
+
 def _deep_merge(base: dict, over: dict) -> dict:
     """Dicts merge recursively; anything else (lists included) is replaced."""
     out = copy.deepcopy(base)
@@ -195,6 +220,8 @@ def load_world(world_dir: Path, library: list[Scenario], perspectives: dict[str,
                     errors.append(f"{eid}: no reply for {sorted(others - replies)} (needed for consultation)")
                 if replies - others:
                     errors.append(f"{eid}: replies for parties not in the scenario: {sorted(replies - others)}")
+                for pid, reply in ev.get("replies", {}).items():
+                    _check_reply(f"{eid}: reply for {pid}", reply, errors)
             events[eid] = Event(id=eid, kind="choice", raw=ev, scenario=s, party_map=pmap)
         elif ev.get("kind") == "auto":
             if not 0.0 <= ev.get("chance", -1) <= 1.0:

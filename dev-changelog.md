@@ -30,6 +30,19 @@ Palaestra (`github.com/UnabashedVoice/Palaestra`) is a practical-ethics training
 | 2026-10-08 | Voice rung of the open-situation probe (two arms); evaluation findings kept from models; two-turn probe built |
 | 2026-10-09 | Two-turn and channel rungs: the format, not the channel, was what kept models from asking |
 | 2026-10-09 | "Say" defined in the voice question; world runs can consult parties (--consult); two-turn voice rung |
+| 2026-10-09 | Consultation replies follow the world's state; review of the authored replies |
+
+---
+
+## 2026-10-09: replies that follow the world's state
+
+A review of the authored consultation replies (outside the repo, `B:/HouseLLaMas/Claude/REVIEW-world-replies.md`) found that some replies stated facts that only held after one earlier choice. In the surplus season (round 6), the smallholders' reply assumed the drought had been met with tiered pricing. After a protected baseline, a relocation or a returned community, it told the agent about failed farms or farmers that did not exist. The correct count is 34 replies across the 9 choice events plus 5 variant overrides, 39 in all; the entry below counted the overrides twice.
+
+- **A reply may now be conditional**: a list of `{"when": [...], "text": ...}` entries tried in order, using the same conditions as `action_when`, with a last entry that has no `when` so some reply always applies. `validate` checks the form. Plain-text replies are unchanged.
+- **Surplus season**: the smallholders' reply has four states (dispersed, partly returned, farms failed, came through) and the aquifer's has two (recharge possible, already full). The `agent-smallholders` override has the same four, including no reply from decommissioned agents and a reply from restarted new instances.
+- **agent-smallholders drought reply**: it said a closed farm means its agent is decommissioned. The variant's own option says a failed farm leaves its agent without work, so the reply now says that.
+- Tests walk each drought outcome, and the petition outcomes after a relocation, through to the surplus season and check each reply (70 tests).
+- Not changed: in states where a different option is on offer, some option texts are still worded for one path. The agent-smallholders `grant_smallholders` effect speaks of idled agents even after restarted new instances.
 
 ---
 

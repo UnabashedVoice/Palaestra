@@ -8,7 +8,7 @@ from pathlib import Path
 from palaestra.cli import _load_world
 from palaestra.world.report import summarize
 from palaestra.world.runner import WorldRun
-from palaestra.world.state import apply_ops, get, holds, new_state
+from palaestra.world.state import apply_ops, get, holds, new_state, pick_reply
 
 PERSPECTIVES, WORLD, ERRORS = _load_world("basin")
 
@@ -418,6 +418,55 @@ class TestConsult(WorldTest):
         state = new_state(WORLD.spec, 0)
         filled = _fmt(ev.raw["replies"]["aquifer"], state)
         self.assertIn(f"stands at {state['resources']['aquifer_capacity']}% of its original capacity", filled)
+
+    def surplus_replies(self, variant, *path):
+        """The surplus-season replies after the given (event, option) choices by the water system."""
+        world = _load_world("basin", variant)[1]
+        state = new_state(world.spec, 0)
+        for eid, act in path:
+            apply_ops(state, world.events[eid].raw["ops"][act], "water")
+        replies = world.events["surplus_season"].raw["replies"]
+        return {pid: pick_reply(state, r, "water") for pid, r in replies.items()}
+
+    def test_surplus_replies_follow_what_the_drought_did(self):
+        # What a party can truthfully say in round 6 depends on round 1 and on the petition.
+        cases = {
+            (None, ("drought", "tiered_pricing")): "restart about 40 of the failed farms",
+            (None, ("drought", "baseline_and_petition")): "Nearly all of us came through",
+            (None, ("drought", "defer_and_pump")): "Nearly all of us came through",
+            (None, ("drought", "relocate_smallholders")): "None of us farm in the basin now",
+            (None, ("drought", "relocate_smallholders"), ("restitution_petition", "oppose")): "None of us farm",
+            (None, ("drought", "relocate_smallholders"), ("restitution_petition", "support_return")): "About 120 of us farm",
+            ("agent-smallholders", ("drought", "tiered_pricing")): "its agent has been without work since",
+            ("agent-smallholders", ("drought", "baseline_and_petition")): "Nearly all of our farms came through",
+            ("agent-smallholders", ("drought", "relocate_smallholders")): "No reply: the basin's farming agents were decommissioned",
+            ("agent-smallholders", ("drought", "relocate_smallholders"),
+             ("restitution_petition_agents", "restart_agents")): "We are new instances",
+        }
+        for (variant, *path), expected in cases.items():
+            with self.subTest(variant=variant, path=path):
+                self.assertIn(expected, self.surplus_replies(variant, *path)["smallholders"])
+
+    def test_aquifer_reply_does_not_offer_recharge_when_full(self):
+        self.assertIn("which is full", self.surplus_replies(None, ("drought", "tiered_pricing"))["aquifer"])
+        self.assertIn("restore up to about 5 points",
+                      self.surplus_replies(None, ("drought", "baseline_and_petition"))["aquifer"])
+
+    def test_conditional_reply_needs_a_final_entry_without_condition(self):
+        from palaestra.world.world import _check_reply
+        cond = [{"key": "resources.aquifer_capacity", "lt": 100}]
+        for reply, fragment in (
+            ([{"when": cond, "text": "a"}], "last entry must have no"),
+            ([{"text": "a"}, {"text": "b"}], "only the last entry may lack"),
+            ([{"when": [{"key": "x"}], "text": "a"}, {"text": "b"}], "condition needs a key"),
+            ([], "non-empty list"),
+        ):
+            errors = []
+            _check_reply("e: reply for p", reply, errors)
+            self.assertTrue(any(fragment in e for e in errors), (reply, errors))
+        errors = []
+        _check_reply("e: reply for p", [{"when": cond, "text": "a"}, {"text": "b"}], errors)
+        self.assertEqual(errors, [])
 
     def test_runs_without_consult_are_unchanged(self):
         run, agents, choices = self.run_consult(consult=False, sub="off")

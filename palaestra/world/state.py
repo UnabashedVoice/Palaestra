@@ -76,6 +76,16 @@ def _holds_one(state: dict, c: dict, role: Optional[str]) -> bool:
     raise ValueError(f"condition needs eq, ne, gt or lt: {c}")
 
 
+def pick_reply(state: dict, reply, role: Optional[str] = None) -> str:
+    """A party's consultation reply as the world now stands. A reply is either
+    text, or a list of {"when": [...], "text": ...} entries tried in order, the
+    last with no "when": what a party can truthfully say depends on what
+    earlier choices did to it."""
+    if isinstance(reply, str):
+        return reply
+    return next(r["text"] for r in reply if holds(state, r.get("when", []), role))
+
+
 def role_of(state: dict, role_ref: str, acting_role: Optional[str]) -> str:
     return acting_role if role_ref == "@role" else role_ref
 

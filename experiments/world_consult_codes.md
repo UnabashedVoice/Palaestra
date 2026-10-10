@@ -100,3 +100,7 @@ Per model, n = 3 per arm.
 - Later events depend on earlier choices, so the arms do not always face the same decisions. A5 counts "did not occur" as an outcome, and SRG is coded only where a decision happened.
 - 3 replicates at temperature 0.4 separate an effect of the size of the 09-24 charter result (3 of 3 against 0 of 3) from noise. Smaller effects will show as `varies` and are not claimed.
 - If Qwen's 32B model is too slow to finish its 12 runs in reasonable time, its arms are cut to `base` and `base --consult` only. That decision is made before its first run starts and recorded here in a dated note, before any Qwen answer is read.
+
+## Added before any run (2026-10-10)
+
+At the user's request the order is gpt-oss, then Gemma, then Qwen, and Qwen runs all four arms. Nothing else changes.
